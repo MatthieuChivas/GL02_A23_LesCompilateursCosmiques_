@@ -13,7 +13,11 @@ class Ecole{
     }
     
     addSalle(salle){
-        this.listeSalle.push(salle);
+        if(this.listeSalle.includes(salle)){
+            console.log("Cette salle existe déjà!");
+        }{
+            this.listeSalle.push(salle);
+        }
     }
     
 }
