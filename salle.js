@@ -3,7 +3,6 @@ class Salle{
         this.nom=nom;
         this.capacite=capacite;
     }
-
 }
 
-export default Salle;
+module.exports = Salle;

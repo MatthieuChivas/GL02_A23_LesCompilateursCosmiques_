@@ -1,22 +1,58 @@
 const fs = require('fs');
-const main = require('./main.js');
+const Salle = require('./salle.js');
 const Ecole = require('./ecole.js');
 const Cours = require('./cours.js');
+const Creneau = require('./creneau.js');
 
 class GestionFichier{
     
     constructor(path){
         this.content = fs.readFileSync(path,{encoding:'utf-8'});
         
+        
     }
     
     creationEcole(){
-        //on peut lire grâce au content !
         const ecole= new Ecole();
-        const cours1 = new Cours("MT01","11h");
-        const salle1 = new Cours("P201","66");
-        ecole.addCours(cours1);
-        ecole.addSalle(salle1);
+        //je pars du principe qu'il y a tjr 4 caractère qui vont faire le nom de la matière
+        let tableauLecture = this.content.trim().split('\r');
+        //console.log(tableauLecture);
+        //je pars du principe qu'il y a tjr 2 ligne après un cours pour leur créneau... (pas tjr vrai je pense)
+        for(let i=0; i<tableauLecture.length;i+=3){
+            //cours directement 
+            let coursNom=0;
+            if(i==0){
+                coursNom = tableauLecture[i].slice(1,5);
+            }
+            else{
+                coursNom= tableauLecture[i].slice(2,7);
+            }
+            
+            
+            
+            const cours = new Cours(coursNom);
+            
+            //c'est ici qu'il faut modifier aussi s'il y a plusieurs ligne après les cours!!
+            for(let j=0; j<2; j++){
+                const ligneDescriptionCours = tableauLecture[j+i+1].split(',');
+                const typeCreneau = ligneDescriptionCours[1];
+                const capacite = ligneDescriptionCours[2].slice(2,5);
+                const horaire = ligneDescriptionCours[3];
+                const salleNom = ligneDescriptionCours[5].slice(2,6);
+                
+                //console.log(typeCreneau);
+                //console.log(capacite);
+                //console.log(horaire);
+                //console.log(salle);
+                const salle = new Salle(salleNom,capacite);
+                ecole.addOnlyNewSalle(salle);
+                const creneau = new Creneau(typeCreneau,salleNom,horaire);
+                cours.ajouterCreneau(creneau);
+            }
+            ecole.addCours(cours);
+        }
+        ecole.afficherEcole();
+
         return ecole;
     }
     

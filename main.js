@@ -47,14 +47,11 @@ class Main{
     importationDonneEtCreationObjets(){
         const fichier = new Fichier('./Data/data.txt');
         this.universite = fichier.creationEcole();
-        console.log(this.universite.getCours());
+        
 
     }
 
     static menuClasseAssocieCours(){
-        //Fichier.ouvrirLeFichier('./Data/data.txt');
-        const fichier = new Fichier('./Data/data.txt');
-        //console.log("Affichage du menu de recherche d'une classe avec un cours...");
         
     }
 }

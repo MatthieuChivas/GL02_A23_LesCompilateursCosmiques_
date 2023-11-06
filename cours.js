@@ -1,10 +1,16 @@
 class Cours {
-    constructor(nom,creaneau){
-        this.creneau=creaneau;
+    constructor(nom){
         this.nom = nom;
+        this.creneau= new Array();
     }
     afficherCour(){
         console.log("J'ai cours");    
+    }
+    ajouterCreneau(creneau){
+        this.creneau.push(creneau);
+    }
+    getCreneaux(){
+        return this.creneau;
     }
 }
 
