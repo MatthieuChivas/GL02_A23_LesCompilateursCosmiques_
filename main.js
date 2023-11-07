@@ -21,24 +21,24 @@ class Main{
     afficherMenu(){
         rl.question('1 - Recherche de classe associée à un cours\n2 - Recherche de capacite dune salle\n3- Recherche disponibilite dune salle \n4- Recherche de salle libre pour un creneau \n5- Export de lemploi du temps \n6 - Visualisation des taux des salles \n7 - Generer le classement des salles par capacite daccueil \nChoix --> ', (answer) => {
             if(answer=='1'){
-                Main.menuClasseAssocieCours();
+                this.menuClasseAssocieCours();
             }
             else if(answer=='2'){
-                Main.menuCapaciteSalle();
+                this.menuCapaciteSalle();
             }
             else if(answer=='3'){
-                Main.menuDisponibiliteDuneSalle();
+                this.menuDisponibiliteDuneSalle();
             }
             else if(answer=='4'){
-                Main.menuSalleLibrePourUnCreaneau();
+                this.menuSalleLibrePourUnCreaneau();
             }
             else if(answer=='5'){
-                Main.menuExportEmploiDuTemps();
+                this.menuExportEmploiDuTemps();
             }
             else if(answer=='6'){
-                Main.menuVisualisationTauxOccupationSalles();
+                this.menuVisualisationTauxOccupationSalles();
             }else if(answer=='7'){
-                Main.menuClassementSalleParCapaciteDoccupation();
+                this.menuClassementSalleParCapaciteDoccupation();
             }
             rl.close();
           });
@@ -60,7 +60,8 @@ class Main{
 }
 
 const main = new Main();
-//main.afficherMenu();
 main.importationDonneEtCreationObjets();
+main.afficherMenu();
+
 
 module.exports = Main;
