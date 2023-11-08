@@ -16,10 +16,21 @@ class Ecole{
     }
     
     addOnlyNewSalle(salle){
-        if(this.listeSalle.includes(salle)){
-            console.log("Cette salle existe déjà!");
-        }{
+        let checkSalleDejaCree=false;
+        this.listeSalle.forEach((salleDejaCree)=>{
+            if(salleDejaCree.nom==salle.nom){
+                checkSalleDejaCree = true;
+                return(checkSalleDejaCree);
+            }
+        });
+
+        if(checkSalleDejaCree){
+            //console.log("Cette salle existe déjà!");
+            return(checkSalleDejaCree);
+        }
+        else{
             this.listeSalle.push(salle);
+            return(checkSalleDejaCree);
         }
     }
 
@@ -28,6 +39,15 @@ class Ecole{
             console.log(`Le cours ${cours.nom} a autant de creneau :`);
             cours.getCreneaux().forEach((creneau)=>{
                 console.log(`Le creneau ${creneau.type} est a ${creneau.salle} a ${creneau.horaire}`);
+            })
+        })
+    }
+
+    afficherOccupationSalle(){
+        this.listeSalle.forEach((salle)=>{
+            console.log(`La salle ${salle.nom} est utilisée a :`);
+            salle.creneauxOccupations.forEach((creneau) =>{
+                creneau.afficherHeureCreneau();
             })
         })
     }

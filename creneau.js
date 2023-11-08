@@ -4,6 +4,12 @@ class Creneau{
         this.type=type;
         this.horaire=horaire;
     }
+
+    afficherHeureCreneau(){
+        console.log(`Le creneau est a l'horaire : ${this.horaire}`);
+    }
 }
+
+
 
 module.exports = Creneau;

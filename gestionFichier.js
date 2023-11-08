@@ -13,6 +13,17 @@ class GestionFichier{
     }
     
     creationEcole(){
+        let ligneDescriptionCours;
+        let typeCreneau;
+        let capacite;
+        let horaire;
+        let salleNom; 
+
+        let checkSalleDejaCree;
+        let creneau;
+        let salle;
+
+
         const ecole= new Ecole();
         //je pars du principe qu'il y a tjr 4 caractère qui vont faire le nom de la matière
         let tableauLecture = this.content.trim().split('\r');
@@ -34,25 +45,41 @@ class GestionFichier{
             
             //c'est ici qu'il faut modifier aussi s'il y a plusieurs ligne après les cours!!
             for(let j=0; j<2; j++){
-                const ligneDescriptionCours = tableauLecture[j+i+1].split(',');
-                const typeCreneau = ligneDescriptionCours[1];
-                const capacite = ligneDescriptionCours[2].slice(2,5);
-                const horaire = ligneDescriptionCours[3];
-                const salleNom = ligneDescriptionCours[5].slice(2,6);
+                ligneDescriptionCours = tableauLecture[j+i+1].split(',');
+                typeCreneau = ligneDescriptionCours[1];
+                capacite = ligneDescriptionCours[2].slice(2,5);
+                horaire = ligneDescriptionCours[3];
+                salleNom = ligneDescriptionCours[5].slice(2,6);
                 
                 //console.log(typeCreneau);
                 //console.log(capacite);
                 //console.log(horaire);
                 //console.log(salle);
-                const salle = new Salle(salleNom,capacite);
-                ecole.addOnlyNewSalle(salle);
-                const creneau = new Creneau(typeCreneau,salleNom,horaire);
+                
+                salle = new Salle(salleNom,capacite);
+                
+                checkSalleDejaCree = ecole.addOnlyNewSalle(salle);
+                console.log(`${checkSalleDejaCree}`);
+
+                creneau = new Creneau(typeCreneau,salleNom,horaire);
+
+                if(checkSalleDejaCree){
+                    //jarrivais pas a trouver comment renvoyer l'objet salle à partir d'ecole...
+                    ecole.getSalle().forEach((salleEcole)=>{
+                        if(salleEcole.nom==salleNom){
+                            salleEcole.ajouterCreneau(creneau);
+                        }
+                    })
+                }
+                else{
+                    salle.ajouterCreneau(creneau);
+                }
+                
                 cours.ajouterCreneau(creneau);
             }
             ecole.addCours(cours);
         }
-        ecole.afficherEcole();
-
+        
         return ecole;
     }
     
