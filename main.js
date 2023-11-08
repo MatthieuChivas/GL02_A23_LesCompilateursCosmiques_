@@ -12,13 +12,14 @@ class Main{
     //je sais pas pourquoi mais j'arrive pas à acceder à l'universite avec le main genre Main.universite.getCours(); dans une autre classe genre fichier ça marche pas....
 
     constructor(){
-        console.log("**************************************************");
-        console.log("Bienvenue sur ce programme de gestion d'universite");
-        console.log("")
-        
+        this.importationDonneEtCreationObjets();
+        this.afficherMenu();
     }
 
     afficherMenu(){
+        console.log("**************************************************");
+        console.log("Bienvenue sur ce programme de gestion d'universite");
+        console.log("")
         rl.question('1 - Recherche de classe associée à un cours\n2 - Recherche de capacite dune salle\n3- Recherche disponibilite dune salle \n4- Recherche de salle libre pour un creneau \n5- Export de lemploi du temps \n6 - Visualisation des taux des salles \n7 - Generer le classement des salles par capacite daccueil \nChoix --> ', (answer) => {
             if(answer=='1'){
                 this.menuClasseAssocieCours();
@@ -40,7 +41,18 @@ class Main{
             }else if(answer=='7'){
                 this.menuClassementSalleParCapaciteDoccupation();
             }
-            rl.close();
+            
+            
+            rl.question('\n\nVeux tu continuer? \nChoix --> ', (answer) => {
+                console.log(`${answer}`);
+                if(answer=="oui"){
+                    console.clear();
+                    this.afficherMenu();
+                }else{
+                    rl.close();
+                }
+            });
+
           });
     }
 
@@ -56,15 +68,11 @@ class Main{
     menuVisualisationTauxOccupationSalles(){
         console.clear();
         console.log("**************************************************************");
-        console.log("Voici le menu de visualisation du taux d'occupation des salles");
+        console.log("Voici le menu de visualisation du taux d'occupation des salles\n");
         this.universite.afficherOccupationSalle();
-        
     }
 }
 
 const main = new Main();
-main.importationDonneEtCreationObjets();
-main.afficherMenu();
-
 
 module.exports = Main;

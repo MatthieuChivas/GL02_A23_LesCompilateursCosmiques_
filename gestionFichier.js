@@ -59,7 +59,6 @@ class GestionFichier{
                 salle = new Salle(salleNom,capacite);
                 
                 checkSalleDejaCree = ecole.addOnlyNewSalle(salle);
-                console.log(`${checkSalleDejaCree}`);
 
                 creneau = new Creneau(typeCreneau,salleNom,horaire);
 
