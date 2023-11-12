@@ -2,7 +2,6 @@ const readline = require('node:readline');
 const { stdin: input, stdout: output } = require('node:process');
 const fs = require('fs');
 const rl = readline.createInterface({ input, output });
-const path = require('path');
 
 class ICalendar {
     constructor() {
@@ -41,18 +40,18 @@ class ICalendar {
         console.error("Erreur lors de l'écriture du fichier :", error);
     }
     modifierDate(date){
-        let year = date.getFullYear();
+        let year = date.getFullYear().toString();
         let month = "";
         if (date.getMonth()+1<10){
-            month = "0" + date.getMonth();
+            month = "0" + (date.getMonth() +1).toString();
         } else {
-            month = date.getMonth();
+            month = (date.getMonth() +1).toString();
         }
         let day = "";
         if (date.getDate()<10){
-            day = "0" + date.getDate()
+            day = "0" + date.getDate().toString()
         } else {
-            day = date.getDate()
+            day = date.getDate().toString()
         }
         return year + month + day
 
@@ -248,13 +247,13 @@ let dictionnaireJours = {
 }
 
 let dictionnaireChiffreToJour = {
-    "0" : {jour: "Lundi"},
-    "1": {jour: "Mardi"},
-    "2": {jour: "Mercredi"},
-    "3": {jour: "Jeudi"},
-    "4": {jour: "Vendredi"},
-    "5": {jour: "Samedi"},
-    "6": {jour: "Dimanche"},
+    "1" : {jour: "Lundi"},
+    "2": {jour: "Mardi"},
+    "3": {jour: "Mercredi"},
+    "4": {jour: "Jeudi"},
+    "5": {jour: "Vendredi"},
+    "6": {jour: "Samedi"},
+    "0": {jour: "Dimanche"},
 }
 let cours = new ICalendar();
 
