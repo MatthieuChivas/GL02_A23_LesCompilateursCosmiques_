@@ -60,7 +60,7 @@ class GestionFichier{
                 
                 checkSalleDejaCree = ecole.addOnlyNewSalle(salle);
 
-                creneau = new Creneau(typeCreneau,horaire);
+                creneau = new Creneau(typeCreneau,salle,horaire);
 
                 if(checkSalleDejaCree){
                     //jarrivais pas a trouver comment renvoyer l'objet salle à partir d'ecole...
