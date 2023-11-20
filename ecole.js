@@ -38,6 +38,15 @@ class Ecole{
             return(checkSalleDejaCree);
         }
     }
+
+    afficherEcole(){
+        this.listeCours.forEach((cours)=>{
+            console.log(`Le cours ${cours.nom} a autant de creneau :`);
+            cours.getCreneaux().forEach((creneau)=>{
+                console.log(`Le creneau ${creneau.type} est a ${creneau.salle.nom} a ${creneau.horaire.heureDebut} jusque ${creneau.horaire.heureFin} le ${creneau.horaire.jour}`);
+            })
+        })
+    }
 }
 
 module.exports = Ecole;
