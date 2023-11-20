@@ -26,22 +26,31 @@ class GestionFichier{
 
         const ecole= new Ecole();
         let tableauLecture = this.content.trim().split('\r\n');
-        console.log(tableauLecture);
+        
         
         //on parcours le fichier ligne par ligne avec la boucle while (car for ça marche pas comme je veux avec le while et les incrémentations ...)
         //-1 car on commence par augmenter (on peut pas finir par incrémenter la position car si passe dans les conditions il va s'incrémenter 2 fois)
         let indiceCurrentPosition=-1;
-        let salleDejaCree=[];
         //pour avoir les horaires sont la bonne forme
         let horaireNvobj; 
+        let premiersTour=true;
         while(indiceCurrentPosition<tableauLecture.length){
             //on s'arrête pour chaque cours
-            indiceCurrentPosition++;
+            if(premiersTour){
+                indiceCurrentPosition++;
+            }
+            
+            
             if(tableauLecture[indiceCurrentPosition][0]=='+'){
+                premiersTour=false;
                 //cours crée
+                
                 let cours = new Cours(tableauLecture[indiceCurrentPosition].slice(1,5));
                 indiceCurrentPosition++;
-                while(tableauLecture[indiceCurrentPosition][0]!='+'){
+                
+                //il faut pas que ça dépasse la longueur du fichier!!
+                while(!(indiceCurrentPosition>=tableauLecture.length) && tableauLecture[indiceCurrentPosition][0]!='+'){
+                   
                     //analyse cours:
                     ligneDescriptionCours = tableauLecture[indiceCurrentPosition].split(',');
                     typeCreneau = ligneDescriptionCours[1];
@@ -51,83 +60,37 @@ class GestionFichier{
 
                     //il faut faire une fonction pour voir si il contient bien la salle
                     // il faut absolument pouvoir mettre les salles dans le tableau car je veux pouvoir mettre la même référence dans le créneau
-                    if(!salleDejaCree.includes() === salleNom){
+                    if(!ecole.isLaSalleEstCreeAPartirDunNom(salleNom)){
                         salle = new Salle(salleNom);
                         //H=V 9:00-12:00
                         let horaireDetaille = horaire.split(' ');
+                        let heureDetaille = horaireDetaille[1].split('-');
                         
-                        horaireNvobj = new Horaire(horaireDetaille[0].slice(2,4),horaireDetaille[1].slice(0,4),horaireDetaille[1].slice(5,10));
+                        horaireNvobj = new Horaire(horaireDetaille[0].slice(2,4),heureDetaille[0],heureDetaille[1]);
                         creneau = new Creneau(typeCreneau,salle,horaireNvobj,capacite);
-                        console.log(typeCreneau,salle,horaireNvobj,capacite);
-                        salleDejaCree.push(salle);
+                        
+                        
+                        ecole.addSalle(salle);
+                        cours.ajouterCreneau(creneau);
+                        ecole.addCours(cours);
+
                     }else{
+                        //jarrivais pas a trouver comment renvoyer l'objet salle à partir d'ecole...
+                        let salleDjacree = ecole.getSalle().filter((salleEcole)=>{salleEcole.nom==salleNom});
+                        
                         let horaireDetaille = horaire.split(' ');
                         
                         horaireNvobj = new Horaire(horaireDetaille[0].slice(2,4),horaireDetaille[1].slice(0,4),horaireDetaille[1].slice(5,10));
-                        creneau = new Creneau(typeCreneau,salleDejaCree.find,horaireNvobj,capacite);
+                        creneau = new Creneau(typeCreneau,salleDjacree,horaireNvobj,capacite);
+                        cours.ajouterCreneau(creneau);
+                        ecole.addCours(cours);
                     }
                     
                     indiceCurrentPosition++;
                 }
         }}
-        
-            
-            
-
-        for(indiceCurrentPosition; indiceCurrentPosition<tableauLecture.length;indiceCurrentPosition+=3){
-            //cours directement 
-            let coursNom=0;
-            if(i==0){
-                coursNom = tableauLecture[i].slice(1,5);
-            }
-            else{
-                coursNom= tableauLecture[i].slice(2,7);
-            }
-            
-            
-            
-            const cours = new Cours(coursNom);
-            
-            //c'est ici qu'il faut modifier aussi s'il y a plusieurs ligne après les cours!!
-            for(let j=0; j<2; j++){
-                ligneDescriptionCours = tableauLecture[j+i+1].split(',');
-                typeCreneau = ligneDescriptionCours[1];
-                capacite = ligneDescriptionCours[2].slice(2,5);
-                horaire = ligneDescriptionCours[3];
-                salleNom = ligneDescriptionCours[5].slice(2,6);
-                
-                //console.log(typeCreneau);
-                //console.log(capacite);
-                //console.log(horaire);
-                //console.log(salle);
-                
-                salle = new Salle(salleNom,capacite);
-                
-                checkSalleDejaCree = ecole.addOnlyNewSalle(salle);
-
-                creneau = new Creneau(typeCreneau,salle,horaire);
-
-                if(checkSalleDejaCree){
-                    //jarrivais pas a trouver comment renvoyer l'objet salle à partir d'ecole...
-                    ecole.getSalle().forEach((salleEcole)=>{
-                        if(salleEcole.nom==salleNom){
-                            salleEcole.ajouterCreneau(creneau);
-                        }
-                    })
-                }
-                else{
-                    salle.ajouterCreneau(creneau);
-                }
-                
-                cours.ajouterCreneau(creneau);
-            }
-            ecole.addCours(cours);
-        }
-        
         return ecole;
     }
-
-    
     
 }
 
