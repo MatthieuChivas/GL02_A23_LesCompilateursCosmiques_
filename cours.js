@@ -1,5 +1,5 @@
 class Cours {
-    constructor(nom,creaneau){
+    constructor(nom){
         this.creneau= new Array();
         this.nom = nom;
     }

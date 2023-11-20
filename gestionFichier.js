@@ -7,7 +7,6 @@ class GestionFichier{
     
     constructor(path){
         this.content = fs.readFileSync(path,{encoding:'utf-8'});
-        
     }
     
     creationEcole(){
