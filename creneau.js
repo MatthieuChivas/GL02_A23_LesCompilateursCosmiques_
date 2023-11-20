@@ -7,4 +7,4 @@ class Creneau{
     }
 }
 
-module.exports = Creaneau;
+module.exports = Creneau;

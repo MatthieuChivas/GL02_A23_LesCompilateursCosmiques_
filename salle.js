@@ -5,4 +5,4 @@ class Salle{
 
 }
 
-export default Salle;
+module.exports = Salle;
