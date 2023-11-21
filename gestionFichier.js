@@ -43,8 +43,7 @@ class GestionFichier{
             
             if(tableauLecture[indiceCurrentPosition][0]=='+'){
                 premiersTour=false;
-                //cours crée
-                
+
                 let cours = new Cours(tableauLecture[indiceCurrentPosition].slice(1,5));
                 indiceCurrentPosition++;
                 
@@ -72,7 +71,7 @@ class GestionFichier{
                         
                         ecole.addSalle(salle);
                         cours.ajouterCreneau(creneau);
-                        ecole.addCours(cours);
+                        
 
                     }else{
                         //jarrivais pas a trouver comment renvoyer l'objet salle à partir d'ecole...
@@ -83,11 +82,13 @@ class GestionFichier{
                         horaireNvobj = new Horaire(horaireDetaille[0].slice(2,4),horaireDetaille[1].slice(0,4),horaireDetaille[1].slice(5,10));
                         creneau = new Creneau(typeCreneau,salleDjacree,horaireNvobj,capacite);
                         cours.ajouterCreneau(creneau);
-                        ecole.addCours(cours);
+                        
                     }
+                    
                     
                     indiceCurrentPosition++;
                 }
+            ecole.addCours(cours);
         }}
         return ecole;
     }
