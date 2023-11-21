@@ -56,7 +56,7 @@ class Main{
 
     importationDonneEtCreationObjets(){
         const fichier = new Fichier('./Data/data.txt');
-        this.universite = fichier.creationEcole();
+        this.universite = fichier.creationEcoleParLectureFichier();
         this.universite.afficherEcole();
 
     }

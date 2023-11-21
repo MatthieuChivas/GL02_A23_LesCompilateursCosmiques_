@@ -11,86 +11,90 @@ class GestionFichier{
         this.content = fs.readFileSync(path,{encoding:'utf-8'});
     }
     
-    creationEcole(){
-        let ligneDescriptionCours;
+    //Retourne une école avec les informations contenue dans le fichier
+    //On pourrait faire du parsin à la place mais j'ai fais le choix 
+    //de lire le fichier sans respecter une grammaire précise 
+    creationEcoleParLectureFichier(){ 
+
+        //ligne du fichier qui décris le créneau
+        let ligneDescriptionCreneau;
         
         let typeCreneau;
         let capacite;
         let horaire;
         let salleNom; 
 
-        let checkSalleDejaCree;
         let creneau;
         let salle;
 
-
         const ecole= new Ecole();
+        
+        //création d'un tableau ligne = ligne du fichier et fin \\
         let tableauLecture = this.content.trim().split('\r\n');
+
         
         
-        //on parcours le fichier ligne par ligne avec la boucle while (car for ça marche pas comme je veux avec le while et les incrémentations ...)
-        //-1 car on commence par augmenter (on peut pas finir par incrémenter la position car si passe dans les conditions il va s'incrémenter 2 fois)
-        let indiceCurrentPosition=-1;
+        let indiceCurrentPosition=0;
+
         //pour avoir les horaires sont la bonne forme
-        let horaireNvobj; 
-        let premiersTour=true;
+        let horaireNvObj; 
+        //permet d'éviter l'entête des fichiers 
+        let isPremiersTour=true;
+
+        //On veut faire des opérations en restant dans le fichier
         while(indiceCurrentPosition<tableauLecture.length){
-            //on s'arrête pour chaque cours
-            if(premiersTour){
-                indiceCurrentPosition++;
-            }
             
-            
+            //+ => Nouveau cours
             if(tableauLecture[indiceCurrentPosition][0]=='+'){
-                premiersTour=false;
+                isPremiersTour=false;
 
                 let cours = new Cours(tableauLecture[indiceCurrentPosition].slice(1,5));
-                indiceCurrentPosition++;
                 
-                //il faut pas que ça dépasse la longueur du fichier!!
+                //on regarde ses créneaux
+                indiceCurrentPosition++;
+                //l'analyse s'arrête s'il détecte un nouveau cours (+), il faut pas que ça dépasse pas la longueur du fichier et 
                 while(!(indiceCurrentPosition>=tableauLecture.length) && tableauLecture[indiceCurrentPosition][0]!='+'){
                    
                     //analyse cours:
-                    ligneDescriptionCours = tableauLecture[indiceCurrentPosition].split(',');
-                    typeCreneau = ligneDescriptionCours[1];
-                    capacite = ligneDescriptionCours[2].slice(2,5);
-                    horaire = ligneDescriptionCours[3];
-                    salleNom = ligneDescriptionCours[5].slice(2,6);
+                    ligneDescriptionCreneau = tableauLecture[indiceCurrentPosition].split(',');
+                    typeCreneau = ligneDescriptionCreneau[1];
+                    capacite = ligneDescriptionCreneau[2].slice(2,5);
+                    horaire = ligneDescriptionCreneau[3];
+                    salleNom = ligneDescriptionCreneau[5].slice(2,6);
 
-                    //il faut faire une fonction pour voir si il contient bien la salle
-                    // il faut absolument pouvoir mettre les salles dans le tableau car je veux pouvoir mettre la même référence dans le créneau
+                    
+                    //si la salle n'est pas déjà crée on la crée et on l'ajoute
                     if(!ecole.isLaSalleEstCreeAPartirDunNom(salleNom)){
                         salle = new Salle(salleNom);
-                        //H=V 9:00-12:00
-                        let horaireDetaille = horaire.split(' ');
-                        let heureDetaille = horaireDetaille[1].split('-');
-                        
-                        horaireNvobj = new Horaire(horaireDetaille[0].slice(2,4),heureDetaille[0],heureDetaille[1]);
-                        creneau = new Creneau(typeCreneau,salle,horaireNvobj,capacite);
-                        
-                        
                         ecole.addSalle(salle);
-                        cours.ajouterCreneau(creneau);
-                        
-
-                    }else{
-                        //jarrivais pas a trouver comment renvoyer l'objet salle à partir d'ecole...
-                        let salleDjacree = ecole.getSalle().filter((salleEcole)=>{salleEcole.nom==salleNom});
-                        
-                        let horaireDetaille = horaire.split(' ');
-                        
-                        horaireNvobj = new Horaire(horaireDetaille[0].slice(2,4),horaireDetaille[1].slice(0,4),horaireDetaille[1].slice(5,10));
-                        creneau = new Creneau(typeCreneau,salleDjacree,horaireNvobj,capacite);
-                        cours.ajouterCreneau(creneau);
-                        
                     }
-                    
-                    
+                    //sinon on la récupère
+                    else{
+                        //jarrivais pas a trouver comment renvoyer l'objet salle à partir d'ecole...
+                        salle = ecole.getSalle().filter((salleEcole)=>{salleEcole.nom==salleNom});    
+                    }
+                    //ensuite on crée les horaires,créneau et le cours
+                    let horaireDetaille = horaire.split(' ');
+                    let heureDetaille = horaireDetaille[1].split('-');
+                
+                    horaireNvObj = new Horaire(horaireDetaille[0].slice(2,4),heureDetaille[0],heureDetaille[1]);
+                    creneau = new Creneau(typeCreneau,salle,horaireNvObj,capacite);  
+                    cours.ajouterCreneau(creneau);
+            
                     indiceCurrentPosition++;
                 }
+
+            //enfin on ajoute le cours à l'école après avoir eu tout les créneaux!  
             ecole.addCours(cours);
-        }}
-        return ecole;
+            }
+            
+        else if(isPremiersTour){
+            indiceCurrentPosition++;
+        }
+
+    }
+
+    return ecole;
     }
     
 }
