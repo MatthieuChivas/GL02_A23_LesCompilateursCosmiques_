@@ -47,6 +47,10 @@ class Ecole{
             })
         })
     }
+
+    creerICalendar(){
+        let iCalendar = new iCalendar(this.listeCours)
+    }
 }
 
 module.exports = Ecole;
