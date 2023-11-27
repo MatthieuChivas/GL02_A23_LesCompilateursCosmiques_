@@ -1,5 +1,5 @@
-const readline = require('node:readline');
-const { stdin: input, stdout: output } = require('node:process');
+const readline = require('readline');
+const { stdin: input, stdout: output } = require('process');
 const fs = require('fs');
 const rl = readline.createInterface({ input, output });
 
@@ -8,23 +8,6 @@ class iCalendar{
 
     constructor(listeCours) {
         this.listeCours = listeCours
-        this.execution()
-
-    }
-
-    async execution(){
-        let cours = []
-        let continuer = "oui"
-        let nomsCours = await this.recupererNomsCours()
-        while (continuer === "oui"){
-            let nomCours = await this.questionUtilisateurNomCours(nomsCours)
-            let infoCours = await this.recupererCours()
-            if (infoCours){
-                cours.push([nomsCours, infoCours])
-            }
-            continuer = await this.questionAsync("Veux-tu continuer ? oui/non")
-        }
-        await creerICalendar(cours)
     }
 
     recupererNomsCours(){
@@ -43,24 +26,31 @@ class iCalendar{
 
     }
 
-    recupererCours(nomCours){
+    async recupererCours(nomCours){
         let cours;
         for (let i in this.listeCours){
             if (this.listeCours[i].nom === nomCours){
-                return this.recupererInfoCours(i)
+                return (await this.recupererInfoCours(this.listeCours[i]))
             }
         }
         console.log("Le cours que tu as choisie n'existe pas donne un de la liste")
         return true
 
     }
-    async recupererInfoCours(cours){
-        let i = 1
-        for (let info in cours.creneau){
-            console.log(`${i} -> As tu cours le ${cours.creneau[info].horaire.jour} de ${cours.creneau[info].horaire.heureDebut} à ${cours.creneau[info].horaire.heureFin}`)
-            i++
+
+    async recupererInfoCours(cours) {
+        for (let i in cours.creneau) {
+            console.log(`${parseInt(i) + 1} -> As tu cours le ${cours.creneau[i].horaire.jour} de ${cours.creneau[i].horaire.dateDebut/*.getAll()*/} à ${cours.creneau[i].horaire.dateFin/*.getAll()*/}`);
         }
-        return cours.creneau[(await this.questionAsync("Ecris le numéro du cours que tu assistes : \n")) - 1]
+            let reponse = await this.questionAsync("Ecrit le numero de cours que tu assistes :")
+            console.log(reponse)
+            if (reponse >= 1 && reponse <= cours.creneau.length) {
+                return cours.creneau[reponse];
+            } else {
+                console.log("Réponse invalide. Veuillez entrer un numéro valide.");
+                // Vous pouvez ajouter une logique pour gérer la réponse invalide, par exemple, redemander la question.
+                return await this.recupererInfoCours(cours);
+            }
     }
 
     async creerICalendar(allCours){
@@ -72,15 +62,15 @@ class iCalendar{
             "PRODID/-//LESBOSSDUCDC//CLIENT/FR\n";
         while (answerDateDebut.getTime() < answerDateFin.getTime()){
             for (let cours in allCours){
-                if(this.dictionnaireJours[allCours[cours].creneau.horaire.jour] === dictionnaireChiffreToJour[answerDateDebut.getDay()].jour){
+                if(allCours[cours][1].horaire.jour === dictionnaireChiffreToJour[answerDateDebut.getDay()].jour){
                     Icalendar += "BEGIN:VEVENT\n" +
                         `UID:${uid}\n` +
-                        `LOCATION:${allCours[cours].creneau.salle}\n` +
+                        `LOCATION:${allCours[cours][1].creneau.salle.nom}\n` +
                         `SUMMARY:Cours\n` +
-                        `DESCRIPTION:Cours de ${allCours[cours].nom} en :${allCours[cours].creneau.salle}\n` +
+                        `DESCRIPTION:Cours de ${allCours[cours][0]} en :${allCours[cours][1].creneau.salle.nom}\n` +
                         "CLASS:PUBLIC\n" +
-                        `DTSTART:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours].creneau.horaire.heureDebut) + "00Z\n"}` +
-                        `DTEND:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours].creneau.horaire.heureFin) + "00Z\n"}` +
+                        `DTSTART:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours].creneau.horaire.dateDebut) + "00Z\n"}` +
+                        `DTEND:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours].creneau.horaire.dateFin) + "00Z\n"}` +
                         `DTSTAMP:${this.recupererStamp()}\n` +
                         `END:VEVENT\n`;
                     uid++;
@@ -117,7 +107,11 @@ class iCalendar{
     }
 
     recupererHeure(heures){
-        //A faire dépend de comment sont les horaires
+        if (heures.heure.length == 1){
+            return "0" + heures.heure + heures.minute
+        } else {
+            return heures.heure + heures.minute
+        }
     }
 
     questionAsync(prompt) {
@@ -146,3 +140,4 @@ class iCalendar{
         "0": {jour: "Dimanche"},
     }
 }
+module.exports = iCalendar;
