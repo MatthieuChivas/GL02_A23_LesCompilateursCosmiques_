@@ -67,6 +67,17 @@ class Main{
         //console.log("Affichage du menu de recherche d'une classe avec un cours...");
         
     }
+    // Méthode pour vérifier la disponibilité pour une salle donnée 
+    menuDisponibiliteDuneSalle(){
+        const SalleDemander = await this.questionAsync("ecrire le nom de la salle !")
+         console.log(SalleDemander);
+         // On compare les crénaux occupé de la salle avec le crénaux test
+         // On retourne faux si correspondance sinon vrai  
+         }    
+    questionAsync(prompt) {
+    return new Promise((resolve) => {
+    rl.question(prompt, resolve);
+     });     
 }
 
 const main = new Main();
