@@ -54,19 +54,35 @@ class Main{
           });
     }
 
+    menuDisponibiliteDuneSalle(){
+        
+        
+    }
+
+    menuVisualisationTauxOccupationSalles(){
+    }
+
     importationDonneEtCreationObjets(){
         const fichier = new Fichier('./Data/data.txt');
         this.universite = fichier.creationEcoleParLectureFichier();
-        this.universite.afficherEcole();
-
     }
 
-    static menuClasseAssocieCours(){
-        //Fichier.ouvrirLeFichier('./Data/data.txt');
-        const fichier = new Fichier('./Data/data.txt');
-        //console.log("Affichage du menu de recherche d'une classe avec un cours...");
+    
+    menuClasseAssocieCours(){
+        
         
     }
+    // Méthode pour vérifier la disponibilité pour une salle donnée 
+    menuDisponibiliteDuneSalle(){
+        const SalleDemander = await this.questionAsync("ecrire le nom de la salle !")
+         console.log(SalleDemander);
+         // On compare les crénaux occupé de la salle avec le crénaux test
+         // On retourne faux si correspondance sinon vrai  
+         }    
+    questionAsync(prompt) {
+    return new Promise((resolve) => {
+    rl.question(prompt, resolve);
+     });     
 }
 
 const main = new Main();
