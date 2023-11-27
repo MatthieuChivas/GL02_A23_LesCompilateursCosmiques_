@@ -74,20 +74,22 @@ class GestionFichier{
                         salle = ecole.getSalle().filter((salleEcole)=>{salleEcole.nom==salleNom});    
                     }
                     //ensuite on crée les horaires,créneau et le cours
+                    //1,D1,P=25,H=V 9:00-12:00,F1,S=B103//
                     let horaireDetaille = horaire.split(' ');
                     let heureDetaille = horaireDetaille[1].split('-');
                 
                     horaireNvObj = new Horaire(horaireDetaille[0].slice(2,4),heureDetaille[0],heureDetaille[1]);
                     creneau = new Creneau(typeCreneau,salle,horaireNvObj,capacite);  
                     cours.ajouterCreneau(creneau);
-            
+                    
                     indiceCurrentPosition++;
                 }
 
             //enfin on ajoute le cours à l'école après avoir eu tout les créneaux!  
             ecole.addCours(cours);
             }
-            
+        
+            //important? 
         else if(isPremiersTour){
             indiceCurrentPosition++;
         }

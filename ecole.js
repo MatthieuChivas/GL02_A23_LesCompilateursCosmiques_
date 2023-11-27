@@ -1,4 +1,5 @@
 class Ecole{
+
     constructor(){
         this.listeCours = new Array();
         this.listeSalle = new Array();
@@ -38,15 +39,18 @@ class Ecole{
             return(checkSalleDejaCree);
         }
     }
+    
 
     afficherEcole(){
         this.listeCours.forEach((cours)=>{
             console.log(`Le cours ${cours.nom} a autant de creneau :`);
             cours.getCreneaux().forEach((creneau)=>{
-                console.log(`Le creneau ${creneau.type} est a ${creneau.salle.nom} a ${creneau.horaire.heureDebut} jusque ${creneau.horaire.heureFin} le ${creneau.horaire.jour}`);
+                console.log(`Le creneau ${creneau.type} est a ${creneau.salle.nom} a ${creneau.horaire.dateDebut} jusque ${creneau.horaire.dateFin} le ${creneau.horaire.jour}`);
             })
         })
     }
+
+
 }
 
 module.exports = Ecole;
