@@ -1,0 +1,57 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"b4f2b9a2-b70e-48ad-97e4-0bf25c9894aa\" name=\"Changes\" comment=\"update Icalendar\">\r\n      <change beforePath=\"$PROJECT_DIR$/ecole.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ecole.js\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"JavaScript File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;florianbnl&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">\r\n    <option name=\"selectedUrlAndAccountId\">\r\n      <UrlAndAccount>\r\n        <option name=\"accountId\" value=\"1fe93009-ec3d-4dc9-90ab-08f2cdea2ed3\" />\r\n        <option name=\"url\" value=\"https://github.com/MatthieuChivas/GestionLocauxGL02.git\" />\r\n      </UrlAndAccount>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 4\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2XxXXX3Y1a894sYuPZuAqWltAUy\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;florian&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"b4f2b9a2-b70e-48ad-97e4-0bf25c9894aa\" name=\"Changes\" comment=\"\" />\r\n      <created>1699571745006</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1699571745006</updated>\r\n      <workItem from=\"1699571746193\" duration=\"104000\" />\r\n      <workItem from=\"1699571887355\" duration=\"20000\" />\r\n      <workItem from=\"1699654298936\" duration=\"7431000\" />\r\n      <workItem from=\"1699713160907\" duration=\"24002000\" />\r\n      <workItem from=\"1699814282307\" duration=\"2261000\" />\r\n      <workItem from=\"1699827892931\" duration=\"96000\" />\r\n      <workItem from=\"1699884435290\" duration=\"142000\" />\r\n      <workItem from=\"1700434098579\" duration=\"147000\" />\r\n      <workItem from=\"1700500013234\" duration=\"799000\" />\r\n      <workItem from=\"1700670527099\" duration=\"285000\" />\r\n      <workItem from=\"1700670821304\" duration=\"1650000\" />\r\n      <workItem from=\"1700672597908\" duration=\"2725000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"ajout de iCalendar.js\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1699661681024</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699661681024</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"ajout de iCalendar.js\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1699730162008</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699730162008</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Fin iCalendar\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1699751588115</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699751588115</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"update Icalendar\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1699816461090</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699816461090</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"5\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"ajout de iCalendar.js\" />\r\n    <MESSAGE value=\"Fin iCalendar\" />\r\n    <MESSAGE value=\"update Icalendar\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"update Icalendar\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 5fe9b87203e1b3c2e39400093252dda0ecafeeb1)
++++ b/.idea/workspace.xml	(date 1701108345525)
+@@ -4,7 +4,8 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="b4f2b9a2-b70e-48ad-97e4-0bf25c9894aa" name="Changes" comment="update Icalendar">
++    <list default="true" id="b4f2b9a2-b70e-48ad-97e4-0bf25c9894aa" name="Changes" comment="création iCalendar">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/ecole.js" beforeDir="false" afterPath="$PROJECT_DIR$/ecole.js" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -83,7 +84,8 @@
+       <workItem from="1700500013234" duration="799000" />
+       <workItem from="1700670527099" duration="285000" />
+       <workItem from="1700670821304" duration="1650000" />
+-      <workItem from="1700672597908" duration="2725000" />
++      <workItem from="1700672597908" duration="2823000" />
++      <workItem from="1701104541244" duration="1919000" />
+     </task>
+     <task id="LOCAL-00001" summary="ajout de iCalendar.js">
+       <option name="closed" value="true" />
+@@ -117,7 +119,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1699816461090</updated>
+     </task>
+-    <option name="localTasksCounter" value="5" />
++    <task id="LOCAL-00005" summary="création iCalendar">
++      <option name="closed" value="true" />
++      <created>1700675402526</created>
++      <option name="number" value="00005" />
++      <option name="presentableId" value="LOCAL-00005" />
++      <option name="project" value="LOCAL" />
++      <updated>1700675402526</updated>
++    </task>
++    <option name="localTasksCounter" value="6" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -127,6 +137,7 @@
+     <MESSAGE value="ajout de iCalendar.js" />
+     <MESSAGE value="Fin iCalendar" />
+     <MESSAGE value="update Icalendar" />
+-    <option name="LAST_COMMIT_MESSAGE" value="update Icalendar" />
++    <MESSAGE value="création iCalendar" />
++    <option name="LAST_COMMIT_MESSAGE" value="création iCalendar" />
+   </component>
+ </project>
+\ No newline at end of file
