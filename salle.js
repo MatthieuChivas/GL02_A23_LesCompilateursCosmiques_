@@ -1,8 +1,6 @@
 class Salle{
-    constructor(nom, capacite){
+    constructor(nom){
         this.nom=nom;
-        this.capacite=capacite;
-        this.creneauxOccupations = new Array();
     }
 
     ajouterCreneau(creneau){

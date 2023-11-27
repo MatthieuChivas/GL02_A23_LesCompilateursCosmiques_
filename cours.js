@@ -1,5 +1,6 @@
 class Cours {
     constructor(nom){
+        this.creneau= new Array();
         this.nom = nom;
         this.creneau= new Array();
     }
@@ -11,6 +12,10 @@ class Cours {
     }
     getCreneaux(){
         return this.creneau;
+    }
+    toString(){
+        console.log(`Le cours ${this.nom} a ${this.creneau.length} creneau`);
+        this.creneau.forEach((creneau)=>creneau.toString());
     }
 }
 

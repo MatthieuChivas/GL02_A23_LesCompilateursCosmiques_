@@ -1,4 +1,5 @@
 class Ecole{
+
     constructor(){
         this.listeCours = new Array();
         this.listeSalle = new Array();
@@ -15,10 +16,18 @@ class Ecole{
         return this.listeSalle;
     }
     
-    addOnlyNewSalle(salle){
+    addSalle(salle){
+        this.listeSalle.push(this.listeSalle);
+    }
+
+    getSalle(){
+        return this.salle;
+    }
+
+    isLaSalleEstCreeAPartirDunNom(salleNom){
         let checkSalleDejaCree=false;
         this.listeSalle.forEach((salleDejaCree)=>{
-            if(salleDejaCree.nom==salle.nom){
+            if(salleDejaCree.nom==salleNom){
                 checkSalleDejaCree = true;
                 return(checkSalleDejaCree);
             }
@@ -29,29 +38,22 @@ class Ecole{
             return(checkSalleDejaCree);
         }
         else{
-            this.listeSalle.push(salle);
+            this.listeSalle.push(salleNom);
             return(checkSalleDejaCree);
         }
     }
+    
 
     afficherEcole(){
         this.listeCours.forEach((cours)=>{
             console.log(`Le cours ${cours.nom} a autant de creneau :`);
             cours.getCreneaux().forEach((creneau)=>{
-                console.log(`Le creneau ${creneau.type} est a ${creneau.salle} a ${creneau.horaire}`);
+                console.log(`Le creneau ${creneau.type} est a ${creneau.salle.nom} a ${creneau.horaire.dateDebut} jusque ${creneau.horaire.dateFin} le ${creneau.horaire.jour}`);
             })
         })
     }
 
-    afficherOccupationSalle(){
-        this.listeSalle.forEach((salle)=>{
-            console.log(`La salle ${salle.nom} est utilisée a :`);
-            salle.creneauxOccupations.forEach((creneau) =>{
-                creneau.afficherHeureCreneau();
-            })
-        })
-    }
-    
+
 }
 
 module.exports = Ecole;
