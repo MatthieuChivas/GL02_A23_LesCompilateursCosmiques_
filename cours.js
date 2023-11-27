@@ -12,6 +12,10 @@ class Cours {
     getCreneaux(){
         return this.creneau;
     }
+    toString(){
+        console.log(`Le cours ${this.nom} a ${this.creneau.length} creneau`);
+        this.creneau.forEach((creneau)=>creneau.toString());
+    }
 }
 
 module.exports = Cours;

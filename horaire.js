@@ -1,8 +1,13 @@
 class Horaire{
-    constructor(jour,heureDebut,heureFin){
+    constructor(jour,dateDebut,dateFin){
         this.jour=jour;
-        this.heureDebut=heureDebut;
-        this.heureFin=heureFin;
+        this.dateDebut=dateDebut;
+        this.dateFin=dateFin;
+    }
+    toString(){
+        console.log(`La date de debut est : ${this.dateDebut}`);
+        console.log(`La date de fin est : ${this.dateFin}`);
+        console.log("FINDELHORAIRE")
     }
 }
 
