@@ -2,6 +2,7 @@ const readline = require('readline');
 const { stdin: input, stdout: output } = require('process');
 const fs = require('fs');
 const rl = readline.createInterface({ input, output });
+const heure = require("./heure")
 
 
 class iCalendar{
@@ -30,7 +31,8 @@ class iCalendar{
         let cours;
         for (let i in this.listeCours){
             if (this.listeCours[i].nom === nomCours){
-                return (await this.recupererInfoCours(this.listeCours[i]))
+                let stamp = await this.recupererInfoCours(this.listeCours[i])
+                return (stamp)
             }
         }
         console.log("Le cours que tu as choisie n'existe pas donne un de la liste")
@@ -43,8 +45,8 @@ class iCalendar{
             console.log(`${parseInt(i) + 1} -> As tu cours le ${cours.creneau[i].horaire.jour} de ${cours.creneau[i].horaire.dateDebut/*.getAll()*/} à ${cours.creneau[i].horaire.dateFin/*.getAll()*/}`);
         }
             let reponse = await this.questionAsync("Ecrit le numero de cours que tu assistes :")
-            console.log(reponse)
-            if (reponse >= 1 && reponse <= cours.creneau.length) {
+            reponse = parseInt(reponse) -1
+            if (reponse >= 1 && reponse < cours.creneau.length) {
                 return cours.creneau[reponse];
             } else {
                 console.log("Réponse invalide. Veuillez entrer un numéro valide.");
@@ -61,16 +63,17 @@ class iCalendar{
             "VERSION:2.0\n" +
             "PRODID/-//LESBOSSDUCDC//CLIENT/FR\n";
         while (answerDateDebut.getTime() < answerDateFin.getTime()){
+
             for (let cours in allCours){
-                if(allCours[cours][1].horaire.jour === dictionnaireChiffreToJour[answerDateDebut.getDay()].jour){
+                if(/*allCours[cours][1].horaire.jour*/ this.dictionnaireJours[allCours[cours][1].horaire.jour].jour === this.dictionnaireChiffreToJour[answerDateDebut.getDay()].jour){
                     Icalendar += "BEGIN:VEVENT\n" +
                         `UID:${uid}\n` +
-                        `LOCATION:${allCours[cours][1].creneau.salle.nom}\n` +
+                        `LOCATION:${allCours[cours][1].salle.nom}\n` +
                         `SUMMARY:Cours\n` +
-                        `DESCRIPTION:Cours de ${allCours[cours][0]} en :${allCours[cours][1].creneau.salle.nom}\n` +
+                        `DESCRIPTION:Cours de ${allCours[cours][0]} en :${allCours[cours][1].salle.nom}\n` +
                         "CLASS:PUBLIC\n" +
-                        `DTSTART:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours].creneau.horaire.dateDebut) + "00Z\n"}` +
-                        `DTEND:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours].creneau.horaire.dateFin) + "00Z\n"}` +
+                        `DTSTART:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours][1].horaire.dateDebut) + "00Z\n"}` +
+                        `DTEND:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours][1].horaire.dateFin) + "00Z\n"}` +
                         `DTSTAMP:${this.recupererStamp()}\n` +
                         `END:VEVENT\n`;
                     uid++;
@@ -107,7 +110,7 @@ class iCalendar{
     }
 
     recupererHeure(heures){
-        if (heures.heure.length == 1){
+        if (heures.heure.length === 1){
             return "0" + heures.heure + heures.minute
         } else {
             return heures.heure + heures.minute
@@ -118,6 +121,15 @@ class iCalendar{
         return new Promise((resolve) => {
             rl.question(prompt, resolve);
         });
+    }
+
+    recupererStamp(){
+        let date = new Date()
+        date = date.toISOString().split('-')
+        date = date.join("").split(":").join("")
+        date = date.slice(0, date.indexOf("."))
+        date += "Z"
+        return date
     }
 
     dictionnaireJours = {
@@ -140,4 +152,5 @@ class iCalendar{
         "0": {jour: "Dimanche"},
     }
 }
+
 module.exports = iCalendar;

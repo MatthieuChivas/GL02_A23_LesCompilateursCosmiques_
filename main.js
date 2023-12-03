@@ -62,9 +62,9 @@ class Main{
         while (continuer === "oui"){
             let nomCours = await iCal.questionUtilisateurNomCours(nomsCours)
             let infoCours = await iCal.recupererCours(nomCours)
-            if (infoCours){
+            if (infoCours !== true){
                 cours.push([nomCours,infoCours])
-                console.log(cours);
+                console.log(infoCours);
             }
             continuer = await iCal.questionAsync("Veux-tu continuer ? oui/non")
         }
