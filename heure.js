@@ -9,9 +9,10 @@ class Heure {
         console.log(HeuresInt)
         return HeuresInt
     }
-    
+    // Je me suis trompée au premier merge, j'avais mis OO au lieu de 00
+
     dictionnnaireStringToInt = {
-        "OO" : {minute : 0},
+        "00" : {minute : 0},
         "30" : {minute : 0.5},
     }
     
