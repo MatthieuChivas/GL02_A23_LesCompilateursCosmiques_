@@ -158,6 +158,7 @@ class Main{
             console.log("Tableau des salles et de leurs capacités, triés par ordre croissant :");
             console.log(CapaciteSalles);
         }
+    
 }
 
 const main = new Main();

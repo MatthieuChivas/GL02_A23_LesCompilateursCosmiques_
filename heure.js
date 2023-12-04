@@ -11,7 +11,7 @@ class Heure {
     }
     
     dictionnnaireStringToInt = {
-        "OO" : {minute : 0},
+        "00" : {minute : 0},
         "30" : {minute : 0.5},
     }
     
