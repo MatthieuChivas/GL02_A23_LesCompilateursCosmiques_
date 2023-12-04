@@ -136,7 +136,7 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
     const dictionnaireSemaine = {
       "L": [],
       "M": [],
-      "Me": [],
+      "ME": [],
       "J": [],
       "V": [],
     };
@@ -144,7 +144,7 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
     // Remplir dictionnaireSemaine avec les créneaux occupés pour la salle spécifiée
     this.universite.getCours().forEach((cours) => {
       cours.getCreneaux().forEach((creneau) => {
-        if (creneau.salle.nom === SalleChercher && dictionnaireSemaine[creneau.horaire.jour]) {
+        if (creneau.salle.nom === SalleChercher) {
           dictionnaireSemaine[creneau.horaire.jour].push(`${creneau.horaire.heureDebut}-${creneau.horaire.heureFin}`);
         }
       });
@@ -152,47 +152,32 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
   
     return dictionnaireSemaine;
   }
-  async menuVisualisationTauxOccupationSalles(){
-    const SalleCherchee = await this.questionAsync("Ecrire le nom de la salle : ");
-    console.log(SalleCherchee);
-    const heuresOccupation = {};
-    const heuresTotales = {};
-  
-    // Initialisation des dictionnaires pour chaque jour de la semaine
-    ['L', 'M', 'Me', 'J', 'V'].forEach((jour) => {
-      heuresOccupation[jour] = 0;
-      heuresTotales[jour] = 0;
-    });
-  
-    // Parcours de chaque cours pour la salle spécifiée
-    this.universite.getCours().forEach((cours) => {
-      cours.getCreneaux().forEach((creneau) => {
-        if (creneau.salle.nom === SalleCherchee) {
-          const jour = creneau.horaire.jour;
-          const debut = parseInt(creneau.horaire.heureDebut.split(':')[0]);
-          const fin = parseInt(creneau.horaire.heureFin.split(':')[0]);
-  
-          // Calcul du nombre d'heures occupées pour chaque jour
-          heuresOccupation[jour] += fin - debut;
-        }
-      });
-    });
-  
-    // Calcul du nombre total d'heures disponibles pour chaque jour
-    Object.keys(heuresTotales).forEach((jour) => {
-      heuresTotales[jour] = 10; // (18h - 8h) * 5 jours par semaine = 50 heures
-    });
-  
-    // Calcul du taux d'occupation pour chaque jour
-    const tauxOccupationParJour = {};
-    Object.keys(heuresOccupation).forEach((jour) => {
-      tauxOccupationParJour[jour] = (heuresOccupation[jour] / heuresTotales[jour]) * 100;
-    });
-  
-    return tauxOccupationParJour;
-  }
-
+  // Méthode pour récupérer les créneaux occupés pour toutes les salles
+  menuVisualisationTauxOccupationSalles(){
+        const toutesLesSalles = {}; // Initialisation du dictionnaire
+        // Parcours de toutes les salles disponibles
+        this.universite.getCours().forEach((cours) => {
+            cours.getCreneaux().forEach((creneau) => {
+                const salleNom = creneau.salle.nom;
+                //console.log(creneau.salle.nom);
+                if (!toutesLesSalles[salleNom]) {
+                    toutesLesSalles[salleNom] = {
+                        "L": [],
+                        "M": [],
+                        "ME": [],
+                        "J": [],
+                        "V": [],
+                    };
+                }
+                
+                toutesLesSalles[salleNom][creneau.horaire.jour].push(`${creneau.horaire.heureDebut}-${creneau.horaire.heureFin}`);
+            });
+           
+        });
+        console.log(toutesLesSalles);
+        return toutesLesSalles;
     }
+}
 
 const main = new Main();
 
