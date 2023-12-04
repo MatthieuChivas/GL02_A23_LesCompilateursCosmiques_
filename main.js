@@ -96,8 +96,7 @@ class Main{
 
         //on récup tous les cours de l'universite
         let listeCours = this.universite.getCours();
-        this.universite.getCours().forEach(cours=>console.log(`cours : ${cours.nom}`));
-
+        listeCours.forEach(cours=>console.log(`${cours.nom}`));
         
         listeCours.forEach((cours) => {
             

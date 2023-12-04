@@ -1,8 +1,10 @@
+const Heure = require('./heure.js');
+
 class Horaire{
-    constructor(jour,dateDebut,dateFin){
+    constructor(jour,heureDeb,heureFin){
         this.jour=jour;
-        this.dateDebut=dateDebut;
-        this.dateFin=dateFin;
+        this.dateDebut= new Heure(heureDeb[0],heureDeb[1]);
+        this.dateFin=new Heure(heureFin[0],heureFin[1]);
     }
     toString(){
         console.log(`La date de debut est : ${this.dateDebut}`);

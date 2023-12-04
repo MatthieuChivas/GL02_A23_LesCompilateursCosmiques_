@@ -77,8 +77,10 @@ class GestionFichier{
                     //1,D1,P=25,H=V 9:00-12:00,F1,S=B103//
                     let horaireDetaille = horaire.split(' ');
                     let heureDetaille = horaireDetaille[1].split('-');
-                
-                    horaireNvObj = new Horaire(horaireDetaille[0].slice(2,4),heureDetaille[0],heureDetaille[1]);
+                    let heureEtMinute = heureDetaille[0].split(':');
+                    let heureEtMinuteFin = heureDetaille[1].split(':')
+
+                    horaireNvObj = new Horaire(horaireDetaille[0].slice(2,4),heureEtMinute,heureEtMinuteFin);
                     creneau = new Creneau(typeCreneau,salle,horaireNvObj,capacite);  
                     cours.ajouterCreneau(creneau);
                     
