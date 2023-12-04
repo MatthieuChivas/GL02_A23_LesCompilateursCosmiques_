@@ -67,25 +67,59 @@ class Main{
         this.universite = fichier.creationEcoleParLectureFichier();
     }
 
-    
-    menuClasseAssocieCours(){
+    //menu de la SPEC1 : 
+    //permet d'obtenir les salles asssociés à un cours
+    async menuClasseAssocieCours(){
+        console.clear();
+        console.log("**************************************************");
+        console.log("*** Voici les salles qui sont accosiées à un cours ***")
+
+        const sallesCours = new Map();
+        let listeSalle = new Array();
+
+        //on récup tous les cours de l'universite
+        let listeCours = this.universite.getCours();
+
         
+        listeCours.forEach((cours) => {
+            
+            cours.getCreneaux().forEach((creneau) => {
+                //on récupère les salles qui sont associés à tous les créneaux d'un cours
+                listeSalle.push(creneau.salle.nom);
+            })
+
+            let listeSalleIdentique = new Set(listeSalle);
+            sallesCours.set(cours.nom, listeSalleIdentique);
+
+            listeSalleIdentique = [];
+            listeSalle = [];
+        })
+
+        //affichage :
+        // sallesCours.forEach((valueSet,key)=>{
+        //     console.log(`Cours : ${key}, Salles :`);
+        //     valueSet.forEach(value=>{
+        //         console.log(value);
+        //     })
+        // })  
         
+        const coursDemande = await this.questionAsync("ecrire le nom du cours : ")
+        if(sallesCours.has(coursDemande)){
+            console.log(`Le cours ${coursDemande} est associé aux salles :`);
+            sallesCours.get(coursDemande).forEach((salle)=>console.log(salle));
+        }else{
+            console.log("Le cours demandé n'est pas dispensé dans cet établissement");
+        }
+
     }
-    // Méthode pour vérifier la disponibilité pour une salle donnée 
-    async menuDisponibiliteDuneSalle(){
-        const SalleDemander = await this.questionAsync("ecrire le nom de la salle !")
-         console.log(SalleDemander);
-         // On compare les crénaux occupé de la salle avec le crénaux test
-         // On retourne faux si correspondance sinon vrai  
-         }
 
     questionAsync(prompt) {
         return new Promise((resolve) => {
-        rl.question(prompt, resolve);
-        });     
-        }
+            rl.question(prompt, resolve);
+        });
     }
+    
+}
 
 const main = new Main();
 
