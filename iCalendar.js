@@ -56,7 +56,7 @@ class iCalendar{
     async recupererInfoCours(cours){
         let i = 1
         for (let info in cours.creneau){
-            console.log(`${i} -> As tu cours le ${cours.creneau[info].horaire.jour} de ${cours.creneau[info].horaire.dateDebut/*.getAll()*/} à ${cours.creneau[info].horaire.dateFin/*.getAll()*/}`)
+            console.log(`${i} -> As tu cours le ${this.dictionnaireJours[cours.creneau[info].horaire.jour].jour} de ${cours.creneau[info].horaire.dateDebut.heure}:${cours.creneau[info].horaire.dateDebut.minute} à ${cours.creneau[info].horaire.dateFin.heure}:${cours.creneau[info].horaire.dateFin.minute}`)
             i++
         }
         let reponse = await this.questionAsync("Ecris le numéro du cours que tu assistes : \n")
@@ -87,7 +87,6 @@ class iCalendar{
                         "CLASS:PUBLIC\n" +
                         `DTSTART:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours][1].horaire.dateDebut) + "00Z\n"}` +
                         `DTEND:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours][1].horaire.dateFin) + "00Z\n"}` +
-                        //`DTSTAMP:${this.recupererStamp()}\n` +
                         `END:VEVENT\n`;
                     uid++;
                 }
@@ -123,7 +122,6 @@ class iCalendar{
     }
 
     recupererHeure(heures){
-        console.log(heures.heure);
         if(heures.heure.length === 1){
             return "0" + heures.heure + heures.minute;
         } else {
