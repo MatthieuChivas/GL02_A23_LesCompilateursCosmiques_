@@ -78,16 +78,16 @@ class iCalendar{
             "PRODID/-//LESBOSSDUCDC//CLIENT/FR\n";
         while (answerDateDebut.getTime() < answerDateFin.getTime()){
             for (let cours in allCours){
-                if(this.dictionnaireJours[allCours[cours][1].jour] === dictionnaireChiffreToJour[answerDateDebut.getDay()].jour){
+                if(this.dictionnaireJours[allCours[cours][1].horaire.jour].jour === this.dictionnaireChiffreToJour[answerDateDebut.getDay()].jour){
                     Icalendar += "BEGIN:VEVENT\n" +
                         `UID:${uid}\n` +
-                        `LOCATION:${allCours[cours].creneau.salle}\n` +
+                        `LOCATION:${allCours[cours][1].salle.nom}\n` +
                         `SUMMARY:Cours\n` +
-                        `DESCRIPTION:Cours de ${allCours[cours].nom} en :${allCours[cours].creneau.salle}\n` +
+                        `DESCRIPTION:Cours de ${allCours[cours][0].nom} en :${allCours[cours][1].salle.nom}\n` +
                         "CLASS:PUBLIC\n" +
-                        `DTSTART:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours].creneau.horaire.heureDebut) + "00Z\n"}` +
-                        `DTEND:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours].creneau.horaire.heureFin) + "00Z\n"}` +
-                        `DTSTAMP:${this.recupererStamp()}\n` +
+                        `DTSTART:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours][1].horaire.dateDebut) + "00Z\n"}` +
+                        `DTEND:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours][1].horaire.dateFin) + "00Z\n"}` +
+                        //`DTSTAMP:${this.recupererStamp()}\n` +
                         `END:VEVENT\n`;
                     uid++;
                 }
@@ -123,7 +123,12 @@ class iCalendar{
     }
 
     recupererHeure(heures){
-        //A faire dépend de comment sont les horaires
+        console.log(heures.heure);
+        if(heures.heure.length === 1){
+            return "0" + heures.heure + heures.minute;
+        } else {
+            return heures.heure + heures.minute;
+        }
     }
 
     questionAsync(prompt) {
@@ -143,13 +148,13 @@ class iCalendar{
     }
 
     dictionnaireChiffreToJour = {
-        "1" : {jour: "Lundi"},
-        "2": {jour: "Mardi"},
-        "3": {jour: "Mercredi"},
-        "4": {jour: "Jeudi"},
-        "5": {jour: "Vendredi"},
-        "6": {jour: "Samedi"},
-        "0": {jour: "Dimanche"},
+        1 : {jour: "Lundi"},
+        2: {jour: "Mardi"},
+        3: {jour: "Mercredi"},
+        4: {jour: "Jeudi"},
+        5: {jour: "Vendredi"},
+        6: {jour: "Samedi"},
+        0: {jour: "Dimanche"},
     }
 }
 module.exports = iCalendar;
