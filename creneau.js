@@ -13,6 +13,10 @@ class Creneau{
         console.log("L'horaire : ");
         this.horaire.toString();
     }
+
+    afficherHeureCreneau(){
+        console.log(`Le creneau est a l'horaire : ${this.horaire}`);
+    }
 }
 
 

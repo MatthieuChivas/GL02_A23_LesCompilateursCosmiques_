@@ -12,6 +12,9 @@ class Ecole{
     getCours(){
         return this.listeCours;
     }
+    getSalle(){
+        return this.listeSalle;
+    }
     
     addSalle(salle){
         this.listeSalle.push(this.listeSalle);
