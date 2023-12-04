@@ -73,17 +73,19 @@ class Main{
         
     }
     // Méthode pour vérifier la disponibilité pour une salle donnée 
-    menuDisponibiliteDuneSalle(){
+    async menuDisponibiliteDuneSalle(){
         const SalleDemander = await this.questionAsync("ecrire le nom de la salle !")
          console.log(SalleDemander);
          // On compare les crénaux occupé de la salle avec le crénaux test
          // On retourne faux si correspondance sinon vrai  
-         }    
+         }
+
     questionAsync(prompt) {
-    return new Promise((resolve) => {
-    rl.question(prompt, resolve);
-     });     
-}
+        return new Promise((resolve) => {
+        rl.question(prompt, resolve);
+        });     
+        }
+    }
 
 const main = new Main();
 
