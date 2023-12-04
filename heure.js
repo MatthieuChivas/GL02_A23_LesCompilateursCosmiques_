@@ -18,3 +18,4 @@ class Heure {
    
 }
 
+module.exports = Heure;
