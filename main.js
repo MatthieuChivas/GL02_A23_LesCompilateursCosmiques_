@@ -9,6 +9,7 @@ const rl = readline.createInterface({ input, output });
 
 class Main{
     universite;
+    //permet d'empêcher des bugs de s'appuyer sur le readline alors qu'il est fermé
     isReadlineClose;
 
     constructor(){
@@ -66,7 +67,7 @@ class Main{
     }
 
     //SPEC1
-    //permet d'obtenir les salles asssociées à un cours
+    //Permet d'obtenir les salles asssociées à un cours
     async menuClasseAssocieCours(){
         console.clear();
         console.log("**************************************************");
@@ -75,7 +76,6 @@ class Main{
         const sallesCours = new Map();
         let listeSalle = new Array();
 
-        //on récup tous les cours de l'universite
         let listeCours = this.universite.getCours();
         listeCours.forEach(cours=>console.log(`${cours.nom}`));
         
@@ -85,35 +85,30 @@ class Main{
                 //on récupère les salles qui sont associés à tous les créneaux d'un cours
                 listeSalle.push(creneau.salle.nom);
             })
-
+            
             let listeSalleIdentique = new Set(listeSalle);
             sallesCours.set(cours.nom, listeSalleIdentique);
 
             listeSalleIdentique = [];
             listeSalle = [];
         })
-
-        //affichage :
-        // sallesCours.forEach((valueSet,key)=>{
-        //     console.log(`Cours : ${key}, Salles :`);
-        //     valueSet.forEach(value=>{
-        //         console.log(value);
-        //     })
-        // })  
         
-        const coursDemande = await this.questionAsync("ecrire le nom du cours : ")
-        if(sallesCours.has(coursDemande)){
-            console.log(`Le cours ${coursDemande} est associé aux salles :`);
-            sallesCours.get(coursDemande).forEach((salle)=>console.log(salle));
-        }else{
-            console.log("Le cours demandé n'est pas dispensé dans cet établissement");
-        }
-        const choix = await this.questionAsync("Veux tu continuer (oui/non) : ");
-
-        switch(choix){
-            case 'oui' : break;
-            case 'non' : rl.close();this.isReadlineClose=true;console.log("Quitter");break;
-        }
+        let choix;
+        do{
+            let coursDemande = await this.questionAsync("ecrire le nom du cours : ")
+            if(sallesCours.has(coursDemande)){
+                console.log(`Le cours ${coursDemande} est associé aux salles :`);
+                sallesCours.get(coursDemande).forEach((salle)=>console.log(salle));
+            }else{
+                console.log("Le cours demandé n'est pas dispensé dans cet établissement");
+            }
+            choix = await this.questionAsync("Veux tu continuer a chercher des associations cours/salles (oui/non) : ");
+            while(choix!='oui' && choix!='non'){
+                console.log('veuillez rentrer oui ou non');
+                choix = await this.questionAsync("Veux tu continuer a chercher des associations cours/salles (oui/non) : ");
+            }
+        }while(choix=='oui');
+    
         console.clear();
     }
 
