@@ -174,7 +174,6 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
             });
            
         });
-        console.log(toutesLesSalles);
         return toutesLesSalles;
     }
 }
