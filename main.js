@@ -9,50 +9,38 @@ const rl = readline.createInterface({ input, output });
 
 class Main{
     universite;
+    isReadlineClose;
 
     constructor(){
         this.importationDonneEtCreationObjets();
         this.afficherMenu();
     }
 
-    afficherMenu(){
-        console.log("**************************************************");
-        console.log("Bienvenue sur ce programme de gestion d'universite");
-        console.log("");
-        rl.question('1 - Recherche de classe associée à un cours\n2 - Recherche de capacite dune salle\n3- Recherche disponibilite dune salle \n4- Recherche de salle libre pour un creneau \n5- Export de lemploi du temps \n6 - Visualisation des taux des salles \n7 - Generer le classement des salles par capacite daccueil \nChoix --> ', (answer) => {
-            if(answer=='1'){
-                this.menuClasseAssocieCours();
+    async afficherMenu(){
+        let choixUtilisateur; //= await this.questionAsync('1 - Recherche de classe associée à un cours\n2 - Recherche de capacite dune salle\n3- Recherche disponibilite dune salle \n4- Recherche de salle libre pour un creneau \n5- Export de lemploi du temps \n6 - Visualisation des taux des salles \n7 - Generer le classement des salles par capacite daccueil \n8 - Quitter le logiciel\nChoix --> ');
+        while(choixUtilisateur !='8'){
+            console.log("**************************************************");
+            console.log("Bienvenue sur ce programme de gestion d'universite");
+            console.log("");
+            choixUtilisateur = await this.questionAsync('1 - Recherche de classe associée à un cours\n2 - Recherche de capacite dune salle\n3- Recherche disponibilite dune salle \n4- Recherche de salle libre pour un creneau \n5- Export de lemploi du temps \n6 - Visualisation des taux des salles \n7 - Generer le classement des salles par capacite daccueil \n8 - Quitter le logiciel\nChoix --> ');
+            this.isReadlineClose=false;
+            switch(choixUtilisateur){
+                case '1' : await this.menuClasseAssocieCours(); break;
+                case '2' : await this.menuCapaciteSalle(); break;
+                case '3' : await this.menuDisponibiliteDuneSalle();break;
+                case '4' : await this.menuSalleLibrePourUnCreaneau();break;
+                case '5' : await this.menuExportEmploiDuTemps();break;
+                case '6' : await this.menuVisualisationTauxOccupationSalles();break;
+                case '7' : await this.menuClassementSalleParCapaciteDoccupation();break;
+                case '8' : console.log('Quitter');rl.close();this.isReadlineClose=true;break;
+                default : console.log('Veuillez rentrer un choix valide');
             }
-            else if(answer=='2'){
-                this.menuCapaciteSalle();
+            if(this.isReadlineClose){
+                break;
             }
-            else if(answer=='3'){
-                this.menuDisponibiliteDuneSalle();
-            }
-            else if(answer=='4'){
-                this.menuSalleLibrePourUnCreaneau();
-            }
-            else if(answer=='5'){
-                this.menuExportEmploiDuTemps();
-            }
-            else if(answer=='6'){
-                this.menuVisualisationTauxOccupationSalles();
-            }else if(answer=='7'){
-                this.menuClassementSalleParCapaciteDoccupation();
-            }
-
-            rl.question('\n\nVeux tu continuer? \nChoix --> ', (answer) => {
-                console.log(`${answer}`);
-                if(answer=="oui"){
-                    console.clear();
-                    this.afficherMenu();
-                }else{
-                    rl.close();
-                }
-            });
-            
-          });
+        }
     }
+    
 
     menuDisponibiliteDuneSalle(){
         
@@ -110,7 +98,13 @@ class Main{
         }else{
             console.log("Le cours demandé n'est pas dispensé dans cet établissement");
         }
+        const choix = await this.questionAsync("Veux tu continuer (oui/non) : ");
 
+        switch(choix){
+            case 'oui' : break;
+            case 'non' : rl.close();this.isReadlineClose=true;console.log("Quitter");break;
+        }
+        console.clear();
     }
 
     questionAsync(prompt) {
