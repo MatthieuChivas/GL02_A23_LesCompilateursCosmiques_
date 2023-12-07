@@ -17,16 +17,16 @@ class Main{
     }
 
     async afficherMenu(){
-        let choixUtilisateur; //= await this.questionAsync('1 - Recherche de classe associée à un cours\n2 - Recherche de capacite dune salle\n3- Recherche disponibilite dune salle \n4- Recherche de salle libre pour un creneau \n5- Export de lemploi du temps \n6 - Visualisation des taux des salles \n7 - Generer le classement des salles par capacite daccueil \n8 - Quitter le logiciel\nChoix --> ');
+        let choixUtilisateur; 
         while(choixUtilisateur !='8'){
             console.log("**************************************************");
             console.log("Bienvenue sur ce programme de gestion d'universite");
             console.log("");
-            choixUtilisateur = await this.questionAsync('1 - Recherche de classe associée à un cours\n2 - Recherche de capacite dune salle\n3- Recherche disponibilite dune salle \n4- Recherche de salle libre pour un creneau \n5- Export de lemploi du temps \n6 - Visualisation des taux des salles \n7 - Generer le classement des salles par capacite daccueil \n8 - Quitter le logiciel\nChoix --> ');
+            choixUtilisateur = await this.questionAsync("1 - Recherche de classe associée à un cours\n2 - Recherche de capacite d'une salle\n3 - Recherche disponibilite d'une salle \n4 - Recherche de salle libre pour un creneau \n5 - Export de l'emploi du temps \n6 - Visualisation des taux des salles \n7 - Generer le classement des salles par capacite d'accueil \n8 - Quitter le logiciel\nChoix --> ");
             this.isReadlineClose=false;
             switch(choixUtilisateur){
-                case '1' : await this.menuClasseAssocieCours(); break;
-                case '2' : await this.menuCapaciteSalle(); break;
+                case '1' : await this.menuClasseAssocieCours();break;
+                case '2' : await this.menuCapaciteSalle();break;
                 case '3' : await this.menuDisponibiliteDuneSalle();break;
                 case '4' : await this.menuSalleLibrePourUnCreaneau();break;
                 case '5' : await this.menuExportEmploiDuTemps();break;
@@ -51,12 +51,22 @@ class Main{
     }
 
     importationDonneEtCreationObjets(){
-        const fichier = new Fichier('./Data/data.txt');
-        this.universite = fichier.creationEcoleParLectureFichier();
+        const gestionnaireFichier = new Fichier('./Data/data.txt');
+        this.universite = gestionnaireFichier.creationEcoleParLectureFichier();
+        gestionnaireFichier.lireUnAutreFichier('./Data/data1.txt',this.universite);
+        gestionnaireFichier.lireUnAutreFichier('./Data/data3.txt',this.universite);
+        gestionnaireFichier.lireUnAutreFichier('./Data/data4.txt',this.universite);
+        gestionnaireFichier.lireUnAutreFichier('./Data/data5.txt',this.universite);
+        gestionnaireFichier.lireUnAutreFichier('./Data/data6.txt',this.universite);
+        gestionnaireFichier.lireUnAutreFichier('./Data/data7.txt',this.universite);
+        gestionnaireFichier.lireUnAutreFichier('./Data/data8.txt',this.universite);
+        gestionnaireFichier.lireUnAutreFichier('./Data/data9.txt',this.universite);
+        gestionnaireFichier.lireUnAutreFichier('./Data/data10.txt',this.universite);
+
     }
 
-    //menu de la SPEC1 : 
-    //permet d'obtenir les salles asssociés à un cours
+    //SPEC1
+    //permet d'obtenir les salles asssociées à un cours
     async menuClasseAssocieCours(){
         console.clear();
         console.log("**************************************************");

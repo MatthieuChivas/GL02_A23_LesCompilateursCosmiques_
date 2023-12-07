@@ -1,0 +1,15 @@
+{
+    "name": "GL02 App gestion salles",
+    "version": "0.0.1",
+    "main": "main.js",
+    "bin": {
+        "mon-application": "main.js"
+    },
+    "scripts": {
+        "start": "node main.js"
+    },
+    "dependencies": {
+        "exceljs": "^4.4.0"
+    }
+    
+}

@@ -17,32 +17,19 @@ class Ecole{
     }
     
     addSalle(salle){
-        this.listeSalle.push(this.listeSalle);
-    }
-
-    getSalle(){
-        return this.salle;
+        this.listeSalle.push(salle);
     }
 
     isLaSalleEstCreeAPartirDunNom(salleNom){
         let checkSalleDejaCree=false;
         this.listeSalle.forEach((salleDejaCree)=>{
             if(salleDejaCree.nom==salleNom){
-                checkSalleDejaCree = true;
                 return(checkSalleDejaCree);
             }
         });
 
-        if(checkSalleDejaCree){
-            //console.log("Cette salle existe déjà!");
-            return(checkSalleDejaCree);
-        }
-        else{
-            this.listeSalle.push(salleNom);
-            return(checkSalleDejaCree);
-        }
+        return(checkSalleDejaCree);
     }
-    
 
     afficherEcole(){
         this.listeCours.forEach((cours)=>{
