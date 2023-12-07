@@ -77,7 +77,7 @@ class Main{
 async menuDisponibiliteDuneSalle() {
     const SalleDemande = await this.questionAsync("Ecrire le nom de la salle : ");
     const dictionnaireCreneaux = this.estLibre(SalleDemande);
-    console.log(dictionnaireCreneaux);
+    //console.log(dictionnaireCreneaux);
     // Dictionnaire des heures disponibles de 8h à 18h par pas de 30 minutes
     const heuresDisponibles = {};
     for (let heure = 8; heure < 18; heure++) {
@@ -139,6 +139,7 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
       "ME": [],
       "J": [],
       "V": [],
+      "SA": [],
     };
   
     // Remplir dictionnaireSemaine avec les créneaux occupés pour la salle spécifiée
@@ -154,12 +155,18 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
   }
   // Méthode pour récupérer les créneaux occupés pour toutes les salles
   menuVisualisationTauxOccupationSalles(){
+    const EnsembleSalles = this.NosSalles();
+  const Occupationtotale = this.OccupationSalles(EnsembleSalles);
+  console.log("Le taux d'occupation des différentes salles : ");
+
+  console.log(Occupationtotale);
+  }
+  NosSalles(){
         const toutesLesSalles = {}; // Initialisation du dictionnaire
         // Parcours de toutes les salles disponibles
         this.universite.getCours().forEach((cours) => {
             cours.getCreneaux().forEach((creneau) => {
                 const salleNom = creneau.salle.nom;
-                //console.log(creneau.salle.nom);
                 if (!toutesLesSalles[salleNom]) {
                     toutesLesSalles[salleNom] = {
                         "L": [],
@@ -167,6 +174,7 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
                         "ME": [],
                         "J": [],
                         "V": [],
+                        "SA":[],
                     };
                 }
                 
@@ -176,6 +184,57 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
         });
         return toutesLesSalles;
     }
+  
+    OccupationSalles(EnsembleSalles) {
+        const tauxOccupationSalles = {};
+      
+        Object.keys(EnsembleSalles).forEach((salle) => {
+          const heuresOccupationJour = {
+            "L": 0,
+            "M": 0,
+            "ME": 0,
+            "J": 0,
+            "V": 0,
+            "SA": 0,
+          };
+      
+          Object.keys(EnsembleSalles[salle]).forEach((jour) => {
+            heuresOccupationJour[jour] = this.calculerHeuresTotalesJour(EnsembleSalles[salle][jour]);
+          });
+      
+          const heuresTotalesSemaine = Object.values(heuresOccupationJour).reduce((total, heures) => total + heures, 0);
+          const heuresTotalesPossibles = (18 - 8) * 6; // Nombre total d'heures possibles (8h à 18h, 5 jours)
+          const tauxOccupation = (heuresTotalesSemaine / heuresTotalesPossibles) * 100;
+      
+          tauxOccupationSalles[salle] = `${tauxOccupation.toFixed(2)}%`; // Arrondi à deux décimales
+        });
+      
+        return tauxOccupationSalles;
+      }
+      
+  calculerHeuresTotalesJour(creneauxJour) {
+    let totalHeures = 0;
+  
+    creneauxJour.forEach((creneau) => {
+      const [heureDebut, minuteDebut] = creneau.split('-')[0].split(':');
+      const [heureFin, minuteFin] = creneau.split('-')[1].split(':');
+  
+      const heuresDebut = parseInt(heureDebut);
+      const heuresFin = parseInt(heureFin);
+      const minutesDebut = parseInt(minuteDebut);
+      const minutesFin = parseInt(minuteFin);
+  
+      const dureeHeures = heuresFin - heuresDebut;
+      const dureeMinutes = (dureeHeures * 60) + (minutesFin - minutesDebut);
+      const dureeEnHeures = dureeMinutes / 60;
+  
+      totalHeures += dureeEnHeures;
+    });
+  
+    return totalHeures;
+  }
+  
+
 }
 
 const main = new Main();
