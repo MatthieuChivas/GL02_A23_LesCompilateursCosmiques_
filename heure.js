@@ -9,13 +9,18 @@ class Heure {
         console.log(HeuresInt)
         return HeuresInt
     }
-    // Je me suis trompée au premier merge, j'avais mis OO au lieu de 00
 
+    getAll(){
+        return this.heure + ":" + this.minute
+
+    }
+    
     dictionnnaireStringToInt = {
         "00" : {minute : 0},
         "30" : {minute : 0.5},
     }
-    
+
    
 }
 
+module.exports = Heure;
