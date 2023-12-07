@@ -1,7 +1,7 @@
 const Ecole = require('./ecole.js');
 const Fichier = require('./gestionFichier.js');
 const ICalendar = require('./iCalendar.js');
-
+const ExcelJS = require('exceljs');
 const readline = require('node:readline');
 const { stdin: input, stdout: output } = require('node:process');
 const { transferableAbortSignal } = require('node:util');
@@ -140,11 +140,27 @@ class Main{
     // Méthode pour vérifier la disponibilité pour une salle donnée
 async menuDisponibiliteDuneSalle() {
     const SalleDemande = await this.questionAsync("Ecrire le nom de la salle : ");
-    const dictionnaireCreneaux = this.estLibre(SalleDemande);
+      // Vérifier l'existence d'une salle
+      let salleExiste = false;
+
+      this.universite.getCours().forEach((cours) => {
+          cours.getCreneaux().forEach((creneau) => {
+              if (creneau.salle.nom === SalleDemande) {
+                  salleExiste = true;
+              }
+          });
+      });
+  
+      if (!salleExiste) {
+          console.log("Erreur : La salle n'existe pas ou est mal écrite.");
+          return;
+      }
+    if(salleExiste==true){
+      const dictionnaireCreneaux = this.estLibre(SalleDemande);
     //console.log(dictionnaireCreneaux);
-    // Dictionnaire des heures disponibles de 8h à 18h par pas de 30 minutes
+    // Dictionnaire des heures disponibles de 8h à 20h par pas de 30 minutes
     const heuresDisponibles = {};
-    for (let heure = 8; heure < 18; heure++) {
+    for (let heure = 8; heure <= 20; heure++) {
       for (let minute = 0; minute < 60; minute += 30) {
         const heureMinute = `${heure}:${minute.toString().padStart(2, "0")}`;
         heuresDisponibles[heureMinute] = true; // Initialise chaque heure comme disponible
@@ -152,10 +168,11 @@ async menuDisponibiliteDuneSalle() {
     }
     // Utilisation de la fonction pour obtenir les créneaux libres par jour
     const creneauxLibresParJour = this.trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux);
-  
     // Affichage des créneaux libres par jour
     console.log("Créneaux libres par jour :");
     console.log(creneauxLibresParJour);
+    } 
+    
   }
   // Fonction pour trouver les créneaux libres 
   // Fonction pour obtenir les créneaux libres par jour
@@ -210,7 +227,7 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
     this.universite.getCours().forEach((cours) => {
       cours.getCreneaux().forEach((creneau) => {
         if (creneau.salle.nom === SalleChercher) {
-          dictionnaireSemaine[creneau.horaire.jour].push(`${creneau.horaire.heureDebut}-${creneau.horaire.heureFin}`);
+          dictionnaireSemaine[creneau.horaire.jour].push(`${creneau.horaire.dateDebut.heure}:${creneau.horaire.dateDebut.minute}-${creneau.horaire.dateFin.heure}:${creneau.horaire.dateFin.minute}`);
         }
       });
     });
@@ -219,11 +236,12 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
   }
   // Méthode pour récupérer les créneaux occupés pour toutes les salles
   menuVisualisationTauxOccupationSalles(){
-    const EnsembleSalles = this.NosSalles();
+  const EnsembleSalles = this.NosSalles();
   const Occupationtotale = this.OccupationSalles(EnsembleSalles);
   console.log("Le taux d'occupation des différentes salles : ");
-
   console.log(Occupationtotale);
+  this.genererFichierExcel(Occupationtotale);
+  
   }
   NosSalles(){
         const toutesLesSalles = {}; // Initialisation du dictionnaire
@@ -242,7 +260,7 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
                     };
                 }
                 
-                toutesLesSalles[salleNom][creneau.horaire.jour].push(`${creneau.horaire.heureDebut}-${creneau.horaire.heureFin}`);
+                toutesLesSalles[salleNom][creneau.horaire.jour].push(`${creneau.horaire.dateDebut.heure}:${creneau.horaire.dateDebut.minute}-${creneau.horaire.dateFin.heure}:${creneau.horaire.dateFin.minute}`);
             });
            
         });
@@ -267,7 +285,7 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
           });
       
           const heuresTotalesSemaine = Object.values(heuresOccupationJour).reduce((total, heures) => total + heures, 0);
-          const heuresTotalesPossibles = (18 - 8) * 6; // Nombre total d'heures possibles (8h à 18h, 5 jours)
+          const heuresTotalesPossibles = (20.5 - 8) * 6; // Nombre total d'heures possibles (8h à 20h, 6 jours)
           const tauxOccupation = (heuresTotalesSemaine / heuresTotalesPossibles) * 100;
       
           tauxOccupationSalles[salle] = `${tauxOccupation.toFixed(2)}%`; // Arrondi à deux décimales
@@ -297,7 +315,55 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
   
     return totalHeures;
   }
+// Fonction pour générer le fichier Excel
+async genererFichierExcel(tauxOccupation) {
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Taux Occupation Salles');
   
+  // Ajouter des en-têtes
+  worksheet.columns = [
+      { header: 'Salle', key: 'salle' },
+      { header: 'Taux Occupation', key: 'tauxOccupation' },
+  ];
+
+  // Ajouter les données du taux d'occupation
+  Object.keys(tauxOccupation).forEach((salle) => {
+      worksheet.addRow({ salle: salle, tauxOccupation: tauxOccupation[salle] });
+  });
+    // Définir des règles de mise en forme conditionnelle
+    const tauxOccupationCol = worksheet.getColumn('tauxOccupation');
+    tauxOccupationCol.eachCell({ includeEmpty: true }, (cell, rowNumber) => {
+      // Vérifier si la cellule est vide ou non
+      if (cell.value) {
+        const tauxOccupation = parseFloat(cell.value.replace('%', ''));
+  
+        // Appliquer une mise en forme conditionnelle
+        if (tauxOccupation > 10) {
+          cell.style.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFFF0000' }, // Rouge vif
+          };
+        } else if (tauxOccupation > 5) {
+          cell.style.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFFF9900' }, // Orange vif
+          };
+        } else {
+          cell.style.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FF00FF00' }, // Vert vif
+          };
+        }
+      }
+    });
+  // Générer le fichier Excel
+  const fileName = 'TauxOccupationSalles.xlsx';
+  await workbook.xlsx.writeFile(fileName);
+  console.log(`Le fichier ${fileName} a été généré avec succès.`);
+}
 
 }
 
