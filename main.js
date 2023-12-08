@@ -299,17 +299,18 @@ class Main{
   estLibre(SalleChercher) {
     const dictionnaireSemaine = {
       "L": [],
-      "M": [],
+      "MA": [],
       "ME": [],
       "J": [],
       "V": [],
-      "SA": [],
+      "S": [],
     };
   
     // Remplir dictionnaireSemaine avec les créneaux occupés pour la salle spécifiée
     this.universite.getCours().forEach((cours) => {
       cours.getCreneaux().forEach((creneau) => {
         if (creneau.salle.nom === SalleChercher) {
+          //console.log(creneau.horaire.jour);
           dictionnaireSemaine[creneau.horaire.jour].push(`${creneau.horaire.dateDebut.heure}:${creneau.horaire.dateDebut.minute}-${creneau.horaire.dateFin.heure}:${creneau.horaire.dateFin.minute}`);
         }
       });
@@ -335,11 +336,11 @@ class Main{
                 if (!toutesLesSalles[salleNom]) {
                     toutesLesSalles[salleNom] = {
                         "L": [],
-                        "M": [],
+                        "MA": [],
                         "ME": [],
                         "J": [],
                         "V": [],
-                        "SA":[],
+                        "S":[],
                     };
                 }
                 
@@ -356,11 +357,11 @@ class Main{
         Object.keys(EnsembleSalles).forEach((salle) => {
           const heuresOccupationJour = {
             "L": 0,
-            "M": 0,
+            "MA": 0,
             "ME": 0,
             "J": 0,
             "V": 0,
-            "SA": 0,
+            "S": 0,
           };
       
           Object.keys(EnsembleSalles[salle]).forEach((jour) => {
