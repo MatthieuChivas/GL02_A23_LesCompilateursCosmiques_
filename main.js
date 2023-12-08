@@ -68,21 +68,29 @@ class Main{
     async menuCapaciteSalle() {
         // on stock le tableau des salles et de leurs capacité dans la variable CapaciteSalles
         let CapaciteSalles = this.CreationTableauCapacite();
-        const SalleDemander = await this.questionAsync("Écrire le nom de la salle : ");
-        let trouve = false;
-        //on parcourt le tableau
-        CapaciteSalles.forEach(CapaciteSalle => {
-            //si le nom de la salle correspond au nom de la salle demandée on affiche sa capacité
-            if (CapaciteSalle.nom === SalleDemander) {
-                console.log(`La capacité maximum de la salle ${SalleDemander} est de ${CapaciteSalle.capacite}`);
-                trouve = true;
+        let choix = "oui";
+        do {
+            let SalleDemander = await this.questionAsync("Écrire le nom de la salle : ");
+            let trouve = false;
+            //on parcourt le tableau
+            CapaciteSalles.forEach(CapaciteSalle => {
+                //si le nom de la salle correspond au nom de la salle demandée on affiche sa capacité
+                if (CapaciteSalle.nom === SalleDemander) {
+                    console.log(`La capacité maximum de la salle ${SalleDemander} est de ${CapaciteSalle.capacite}`);
+                    trouve = true;
+                }
+            });
+            //si la salle n'a pas été trouvé dans le tableau
+            if (!trouve){
+                console.log("Cette salle n'existe pas.");
             }
-        });
-        //si la salle n'a pas été trouvé dans le tableau
-        if (!trouve){
-            console.log("Cette salle n'existe pas.");
-            this.menuCapaciteSalle();
-        }
+            choix = await this.questionAsync("Veux-tu continuer à chercher les capacités d'une salle ? (tape oui ou non) ");
+        }while(choix=='oui')
+        let choixfermeture = await this.questionAsync("Voulez-vous fermer le programme ? (tapez oui ou non) ");
+            if (choixfermeture == "oui"){
+                rl.close;
+                this.isReadlineClose = true;
+            }
     }
 
     // Méthode pour créer un tableau avec la capacité et les salles données :
@@ -135,6 +143,11 @@ class Main{
               });
             console.log("Tableau des salles et de leurs capacités, triés par ordre croissant :");
             console.log(CapaciteSalles);
+            let choixfermeture = await this.questionAsync("Voulez-vous fermer le programme ? (tapez oui ou non) ");
+            if (choixfermeture == "oui"){
+                rl.close;
+                this.isReadlineClose = true;
+            }
         }
     
     
@@ -433,7 +446,7 @@ class Main{
     await workbook.xlsx.writeFile(fileName);
     console.log(`Le fichier ${fileName} a été généré avec succès.`);
   }
-  async menuClassementSalleParCapaciteDoccupation(){
+  /*async menuClassementSalleParCapaciteDoccupation(){
     //on récupère le tableau des salles et des capacités
     let CapaciteSalles = this.CreationTableauCapacite();
     //le tableau est modifié et trié par ordre croissant
@@ -442,7 +455,7 @@ class Main{
       });
     console.log("Tableau des salles et de leurs capacités, triés par ordre croissant :");
     console.log(CapaciteSalles);
-  }
+  }*/
 }
 
 
