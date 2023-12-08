@@ -110,7 +110,7 @@ class Main{
                 // On parcourt le tableau des salles et des capacités
                 CapaciteSalles.forEach(CapaciteSalle => {
                     // Si la salle existe déjà
-                    if (CapaciteSalle.nom === NomSalle) {
+                    if (CapaciteSalle.nom === NomSalle && NomSalle == "salle non definie") {
                         SalleExistante = true;
                         // On met à jour la capacité du tableau si elle est inférieure
                         if (parseInt(CapaciteSalle.capacite) < parseInt(this.universite.listeCours[i].creneau[j].nombreEleve)) {
@@ -120,7 +120,7 @@ class Main{
                 });
 
                     // Si la salle n'existe pas
-                    if (!SalleExistante) {
+                    if (!SalleExistante && NomSalle !== "salle non definie") {
                         // On crée une nouvelle ligne avec la salle et sa capacité
                         let NouvellePersonne = {
                             nom: this.universite.listeCours[i].creneau[j].salle.nom,
