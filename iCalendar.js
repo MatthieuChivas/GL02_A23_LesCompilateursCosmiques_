@@ -83,7 +83,7 @@ class iCalendar{
                         `UID:${uid}\n` +
                         `LOCATION:${allCours[cours][1].salle.nom}\n` +
                         `SUMMARY:Cours\n` +
-                        `DESCRIPTION:Cours de ${allCours[cours][0].nom} en :${allCours[cours][1].salle.nom}\n` +
+                        `DESCRIPTION:Cours de ${allCours[cours][0]} en :${allCours[cours][1].salle.nom}\n` +
                         "CLASS:PUBLIC\n" +
                         `DTSTART:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours][1].horaire.dateDebut) + "00Z\n"}` +
                         `DTEND:${(await this.modifierDate(answerDateDebut)) + "T" + this.recupererHeure(allCours[cours][1].horaire.dateFin) + "00Z\n"}` +
