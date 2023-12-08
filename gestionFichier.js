@@ -10,11 +10,21 @@ class GestionFichier{
     constructor(path){
         this.content = fs.readFileSync(path,{encoding:'utf-8'});
     }
+    lireUnAutreFichier(path,ecole){
+        this.content = fs.readFileSync(path,{encoding:'utf-8'});
+        this.ajoutCoursEtSalle(ecole)
+    }
     
     //Retourne une école avec les informations contenue dans le fichier
-    //On pourrait faire du parsin à la place mais j'ai fais le choix 
+    //On pourrait faire du parsing à la place mais j'ai fais le choix 
     //de lire le fichier sans respecter une grammaire précise 
     creationEcoleParLectureFichier(){ 
+        const ecole= new Ecole();
+        this.ajoutCoursEtSalle(ecole);
+        return ecole;
+    }
+
+    ajoutCoursEtSalle(ecole){ 
 
         //ligne du fichier qui décris le créneau
         let ligneDescriptionCreneau;
@@ -26,13 +36,9 @@ class GestionFichier{
 
         let creneau;
         let salle;
-
-        const ecole= new Ecole();
         
         //création d'un tableau ligne = ligne du fichier et fin \\
         let tableauLecture = this.content.trim().split('\r\n');
-
-        
         
         let indiceCurrentPosition=0;
 
@@ -48,19 +54,24 @@ class GestionFichier{
             if(tableauLecture[indiceCurrentPosition][0]=='+'){
                 isPremiersTour=false;
 
-                let cours = new Cours(tableauLecture[indiceCurrentPosition].slice(1,5));
+                let cours = new Cours(tableauLecture[indiceCurrentPosition].slice(1,7));
                 
                 //on regarde ses créneaux
                 indiceCurrentPosition++;
                 //l'analyse s'arrête s'il détecte un nouveau cours (+), il faut pas que ça dépasse pas la longueur du fichier et 
                 while(!(indiceCurrentPosition>=tableauLecture.length) && tableauLecture[indiceCurrentPosition][0]!='+'){
-                   
+
                     //analyse cours:
                     ligneDescriptionCreneau = tableauLecture[indiceCurrentPosition].split(',');
                     typeCreneau = ligneDescriptionCreneau[1];
                     capacite = ligneDescriptionCreneau[2].slice(2,5);
                     horaire = ligneDescriptionCreneau[3];
+                
                     salleNom = ligneDescriptionCreneau[5].slice(2,6);
+                    
+                    if(salleNom=='//'){
+                        salleNom="salle non definie";
+                    }
 
                     
                     //si la salle n'est pas déjà crée on la crée et on l'ajoute
@@ -71,7 +82,8 @@ class GestionFichier{
                     //sinon on la récupère
                     else{
                         //jarrivais pas a trouver comment renvoyer l'objet salle à partir d'ecole...
-                        salle = ecole.getSalle().filter((salleEcole)=>{salleEcole.nom==salleNom});    
+                        salle = ecole.getSalle().filter((salleEcole)=>{salleEcole.nom==salleNom});
+                        //console.log(salle);    
                     }
                     //ensuite on crée les horaires,créneau et le cours
                     //1,D1,P=25,H=V 9:00-12:00,F1,S=B103//
@@ -87,18 +99,17 @@ class GestionFichier{
                     indiceCurrentPosition++;
                 }
 
-            //enfin on ajoute le cours à l'école après avoir eu tout les créneaux!  
-            ecole.addCours(cours);
+                //enfin on ajoute le cours à l'école après avoir eu tout les créneaux!  
+                ecole.addCours(cours);
             }
         
             //important? 
-        else if(isPremiersTour){
-            indiceCurrentPosition++;
+            else if(isPremiersTour){
+                indiceCurrentPosition++;
+            }
+
         }
 
-    }
-
-    return ecole;
     }
     
 }
