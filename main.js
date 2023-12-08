@@ -84,7 +84,7 @@ class Main{
         let salle;
         
         
-        for (i=0;i<this.universite.cours.creneau.length;i++){
+        for (i=0;i<this.universite.listeCours.length;i++){
             for (j=0;j<this.universite.cours.creneau.horaire.length;j++){
                 //sallesDispo[i][j][k]=this.universite.cours.creneau.salle
                 listeJours.listeCreneaux.salle=
