@@ -99,6 +99,7 @@ class Main{
                 rl.close;
                 this.isReadlineClose = true;
             }
+            console.clear();
     }
 
     // Méthode pour créer un tableau avec la capacité et les salles données :
