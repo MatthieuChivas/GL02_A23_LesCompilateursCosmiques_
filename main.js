@@ -87,6 +87,7 @@ class Main{
         // Déclaration des variables
 
         let i; 
+        let i2;
         let j; 
         let k;
         let kMobile;
@@ -99,29 +100,100 @@ class Main{
         let sallePresente;
         let nSallesDispo=0;
 
-        // Exemples de disponibilités de salles qu'on stocke dans le tableau sallesDispo
+        // -----------------------------------------------------------
 
-        for (j = 2; j < 8; j++) {
-            sallesDispo [4][j][0]="B103"; // B103 disponible le Vendredi de 9:00 à 12:00
+        const fs = require('fs');
+
+        const filePath = './Data/data.txt';
+        
+        const texte = fs.readFileSync(filePath, 'utf8');
+            
+        /*const texte = `
+        +AP03
+        1,D1,P=24,H=V 9:00-12:00,F1,S=B103//
+        1,D2,P=25,H=V 13:00-16:00,F1,S=B103//
+        +BI01
+        1,C1,P=25,H=ME 8:00-10:00,F1,S=P101//
+        1,D1,P=49,H=ME 10:00-12:00,F1,S=P104//
+        +BI02
+        1,C1,P=35,H=J 8:00-10:00,F1,S=B103//
+        1,D1,P=25,H=J 10:00-12:00,F1,S=B102//
+        `;*/
+
+        // Transformer la chaîne en tableau de caractères
+        
+        const caracteres = Array.from(texte);
+        console.log(texte);
+        console.log (caracteres);
+
+
+        let infos = new Array(4).fill(null);
+        for (i2 = 0; i2 < caracteres.length; i2++){
+            if (caracteres[i2]=='H'){
+                infos[0]=caracteres[i2+2];
+                if ((caracteres[i2+2]=='M')&&(caracteres[i2+3]=='E')){
+                    infos[0]='ME'
+                }
+            }
+            if (caracteres[i2]=='-'){
+                if (caracteres[i2-5]==' '){
+                    infos[1]=caracteres[i2-4]+caracteres[i2-3]+caracteres[i2-2]+caracteres[i2-1];
+                }else{
+                    infos[1]=caracteres[i2-5]+caracteres[i2-4]+caracteres[i2-3]+caracteres[i2-2]+caracteres[i2-1];
+                }
+                if (caracteres[i2+5]==','){
+                    infos[2]=caracteres[i2+1]+caracteres[i2+2]+caracteres[i2+3]+caracteres[i2+4];
+                }else{
+                    infos[2]=caracteres[i2+1]+caracteres[i2+2]+caracteres[i2+3]+caracteres[i2+4]+caracteres[i2+5];
+                }
+            }
+            if (caracteres[i2]=='S'){
+                infos[3]=caracteres[i2+2]+caracteres[i2+3]+caracteres[i2+4]+caracteres[i2+5]
+            }
+            if ((caracteres[i2]=='/')&&(infos[0]!=null)&&(infos[1]!=null)&&(infos[2]!=null)&&(infos[3]!=null)){
+                infoValide=0;
+                for (i = 0; i < 6; i++){
+                    if (infos[0]==listeJours[i]){
+                        infoValide=infoValide+1;
+                        iChoix=i;
+                    }
+                }
+                for (i = 0; i < 24; i++){
+                    if (infos[1]==listeCreneaux[i]){
+                        infoValide=infoValide+1;
+                        jChoix=i;
+                    }
+                }
+                for (i = 0; i < 25; i++){
+                    if (infos[2]==listeCreneaux[i]){
+                        infoValide=infoValide+1;
+                        j2Choix=i;
+                    }
+                }
+                if (infoValide==3){
+                    k=0;
+                    for (i = jChoix; i < j2Choix; i++){
+                        while (sallesDispo[iChoix][i][k]!=null){
+                            k=k+1
+                        }
+                        sallesDispo[iChoix][i][k]=infos[3];
+                    }
+                }
+                for (j = 0; j < 4; j++){
+                    infos[j]=null
+                }
+            }
         }
-        for (j = 10; j < 16; j++) {
-            sallesDispo [4][j][0]="B103"; // B103 le V de 13:00 à 16:00
-        }
-        for (j = 0; j < 4; j++) {
-            sallesDispo [2][j][0]="P101" // P101 le ME de 8:00 à 10:00
-        }
-        for (j = 4; j < 8; j++) {
-            sallesDispo [2][j][0]="P101" // P101 le ME de 10:00 à 12:00
-        }
-        for (j = 0; j < 4; j++) {
-            sallesDispo [3][j][0]="S104" // S104 le J de 13:00 à 16:00
-        }
-        for (j = 4; j < 8; j++) {
-            sallesDispo [3][j][0]="S104" // S104 le J de 10:00 à 12:00
-        }
-        for (j = 4; j < 6; j++) {
-            sallesDispo [4][j][1]="B104" // B104 le V de 10:00 à 11:00 (elle est pas dans le data.txt, je l'ai rajoutée pour qu'on voie comment ça fait quand y a deux salles disponibles en même temps)
-        }
+
+
+
+
+
+
+
+
+
+        // -----------------------------------------------------------
 
         // On demande le jour et les heures de début et de fin du créneau
         // On stocke leur rang dans les tableaux listeJours et listeCreneaux dans des variables iChoix, jChoix et j2choix
