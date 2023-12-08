@@ -35,11 +35,11 @@ class Main{
                 case '5' : await this.menuExportEmploiDuTemps();break;
                 case '6' : await this.menuVisualisationTauxOccupationSalles();break;
                 case '7' : await this.menuClassementSalleParCapaciteDoccupation();break;
-                case '8' : console.log('Quitter');rl.close();this.isReadlineClose=true;break;
+                case '8' : rl.close();this.isReadlineClose=true;break;
                 default : console.log('Veuillez rentrer un choix valide');
             }
             if(this.isReadlineClose){
-                console.log("Fermeture en cours");
+                console.log("\nFermeture en cours...");
                 break;
             }
         }
@@ -74,32 +74,32 @@ class Main{
     
     // Méthode pour afficher la capacité d'une salle donnée :
     async menuCapaciteSalle() {
-        // on stock le tableau des salles et de leurs capacité dans la variable CapaciteSalles
-        let CapaciteSalles = this.CreationTableauCapacite();
-        let choix = "oui";
-        do {
-            let SalleDemander = await this.questionAsync("Écrire le nom de la salle : ");
-            let trouve = false;
-            //on parcourt le tableau
-            CapaciteSalles.forEach(CapaciteSalle => {
-                //si le nom de la salle correspond au nom de la salle demandée on affiche sa capacité
-                if (CapaciteSalle.nom === SalleDemander) {
-                    console.log(`La capacité maximum de la salle ${SalleDemander} est de ${CapaciteSalle.capacite}`);
-                    trouve = true;
-                }
-            });
-            //si la salle n'a pas été trouvé dans le tableau
-            if (!trouve){
-                console.log("Cette salle n'existe pas.");
-            }
-            choix = await this.questionAsync("Veux-tu continuer à chercher les capacités d'une salle ? (tape oui ou non) ");
-        }while(choix=='oui')
-        let choixfermeture = await this.questionAsync("Voulez-vous fermer le programme ? (tapez oui ou non) ");
-            if (choixfermeture == "oui"){
-                rl.close;
-                this.isReadlineClose = true;
-            }
-            console.clear();
+      // on stock le tableau des salles et de leurs capacité dans la variable CapaciteSalles
+      let CapaciteSalles = this.CreationTableauCapacite();
+      let choix = "oui";
+      do {
+          let SalleDemander = await this.questionAsync("Écrire le nom de la salle : ");
+          let trouve = false;
+          //on parcourt le tableau
+          CapaciteSalles.forEach(CapaciteSalle => {
+              //si le nom de la salle correspond au nom de la salle demandée on affiche sa capacité
+              if (CapaciteSalle.nom === SalleDemander) {
+                  console.log(`La capacité maximum de la salle ${SalleDemander} est de ${CapaciteSalle.capacite}`);
+                  trouve = true;
+              }
+          });
+          //si la salle n'a pas été trouvé dans le tableau
+          if (!trouve){
+              console.log("Cette salle n'existe pas.");
+          }
+          choix = await this.questionAsync("Veux-tu continuer à chercher les capacités d'une salle ? (tape oui ou non) ");
+      }while(choix=='oui')
+      let choixfermeture = await this.questionAsync("Voulez-vous retourner à l'écran d'acceuil ? (tapez oui ou non) ");
+          if (choixfermeture == "non"){
+              rl.close;
+              this.isReadlineClose = true;
+          }
+          console.clear();
     }
 
     // Méthode pour créer un tableau avec la capacité et les salles données :
@@ -118,7 +118,7 @@ class Main{
                 // On parcourt le tableau des salles et des capacités
                 CapaciteSalles.forEach(CapaciteSalle => {
                     // Si la salle existe déjà
-                    if (CapaciteSalle.nom === NomSalle && NomSalle == "salle non definie") {
+                    if (CapaciteSalle.nom === NomSalle || NomSalle == "salle non definie") {
                         SalleExistante = true;
                         // On met à jour la capacité du tableau si elle est inférieure
                         if (parseInt(CapaciteSalle.capacite) < parseInt(this.universite.listeCours[i].creneau[j].nombreEleve)) {
@@ -152,11 +152,12 @@ class Main{
               });
             console.log("Tableau des salles et de leurs capacités, triés par ordre croissant :");
             console.log(CapaciteSalles);
-            let choixfermeture = await this.questionAsync("Voulez-vous fermer le programme ? (tapez oui ou non) ");
-            if (choixfermeture == "oui"){
+            let choixfermeture = await this.questionAsync("Voulez-vous retourner à l'écran d'acceuil ? (tapez oui ou non) ");
+            if (choixfermeture == "non"){
                 rl.close;
                 this.isReadlineClose = true;
             }
+            console.clear();
         }
     
     
@@ -226,7 +227,7 @@ class Main{
         return new Promise((resolve) => {
         rl.question(prompt, resolve);
          });     
-        }
+    }
     // Méthode pour vérifier la disponibilité pour une salle donnée
     
     async menuDisponibiliteDuneSalle() {
@@ -246,23 +247,29 @@ class Main{
           console.log("Erreur : La salle n'existe pas ou est mal écrite.");
           return;
       }
-    if(salleExiste==true){
-      const dictionnaireCreneaux = this.estLibre(SalleDemande);
-    //console.log(dictionnaireCreneaux);
-    // Dictionnaire des heures disponibles de 8h à 20h par pas de 30 minutes
-    const heuresDisponibles = {};
-    for (let heure = 8; heure <= 20; heure++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const heureMinute = `${heure}:${minute.toString().padStart(2, "0")}`;
-        heuresDisponibles[heureMinute] = true; // Initialise chaque heure comme disponible
-      }
+      if(salleExiste==true){
+        const dictionnaireCreneaux = this.estLibre(SalleDemande);
+      //console.log(dictionnaireCreneaux);
+      // Dictionnaire des heures disponibles de 8h à 20h par pas de 30 minutes
+      const heuresDisponibles = {};
+      for (let heure = 8; heure <= 20; heure++) {
+        for (let minute = 0; minute < 60; minute += 30) {
+          const heureMinute = `${heure}:${minute.toString().padStart(2, "0")}`;
+          heuresDisponibles[heureMinute] = true; // Initialise chaque heure comme disponible
+        }
     }
     // Utilisation de la fonction pour obtenir les créneaux libres par jour
     const creneauxLibresParJour = this.trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux);
     // Affichage des créneaux libres par jour
     console.log("Créneaux libres par jour :");
     console.log(creneauxLibresParJour);
-    }   
+    }
+    let choixfermeture = await this.questionAsync("Voulez-vous retourner à l'écran d'acceuil ? (tapez oui ou non) ");
+            if (choixfermeture == "non"){
+                rl.close;
+                this.isReadlineClose = true;
+            }
+            console.clear();   
   }
 
   // Fonction pour trouver les créneaux libres 
@@ -332,8 +339,13 @@ class Main{
     const Occupationtotale = this.OccupationSalles(EnsembleSalles);
     console.log("Le taux d'occupation des différentes salles : ");
     console.log(Occupationtotale);
-    this.genererFichierExcel(Occupationtotale);
-  
+    await this.genererFichierExcel(Occupationtotale);
+    let choixfermeture = await this.questionAsync("Voulez-vous retourner à l'écran d'acceuil ? (tapez oui ou non) ");
+            if (choixfermeture == "non"){
+                rl.close;
+                this.isReadlineClose = true;
+            }
+    console.clear();
   }
   NosSalles(){
         const toutesLesSalles = {}; // Initialisation du dictionnaire
