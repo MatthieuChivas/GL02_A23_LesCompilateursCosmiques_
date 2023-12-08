@@ -35,7 +35,7 @@ class Ecole{
         this.listeCours.forEach((cours)=>{
             console.log(`Le cours ${cours.nom} a autant de creneau :`);
             cours.getCreneaux().forEach((creneau)=>{
-                console.log(`Le creneau ${creneau.type} est a ${creneau.salle.nom} a ${creneau.horaire.dateDebut.heure} : ${creneau.horaire.dateDebut.minute}  jusque ${creneau.horaire.dateFin.heure} : ${creneau.horaire.dateFin.minute} le ${creneau.horaire.jour}`);
+                console.log(`Le creneau ${creneau.type} est a ${creneau.salle.nom} a ${creneau.horaire.dateDebut.heure} : ${creneau.horaire.dateDebut.minute}  jusque ${creneau.horaire.dateFin.heure} : ${creneau.horaire.dateFin.minute} le ${creneau.horaire.jour} capacite : ${creneau.nombreEleve}`);
             })
         })
     }

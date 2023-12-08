@@ -1,6 +1,5 @@
 const Ecole = require('./ecole.js');
 const Fichier = require('./gestionFichier.js');
-const ICalendar = require('./iCalendar.js');
 const ExcelJS = require('exceljs');
 const readline = require('node:readline');
 const { stdin: input, stdout: output } = require('node:process');
@@ -18,6 +17,12 @@ class Main{
     constructor(){
         this.importationDonneEtCreationObjets();
         this.afficherMenu();
+    }
+
+    questionAsync(prompt) {
+        return new Promise((resolve) => {
+            rl.question(prompt, resolve);
+        });     
     }
 
     async afficherMenu(){
@@ -47,6 +52,7 @@ class Main{
 
     async menuExportEmploiDuTemps(){
         console.clear();
+        const ICalendar = require('./iCalendar.js');
         let iCal = new ICalendar(this.universite.listeCours);
         //await iCal.execution();
         let cours = []
@@ -64,6 +70,67 @@ class Main{
 
     }
     
+    // Méthode pour afficher la capacité d'une salle donnée :
+    async menuCapaciteSalle() {
+        // on stock le tableau des salles et de leurs capacité dans la variable CapaciteSalles
+        let CapaciteSalles = this.CreationTableauCapacite();
+        const SalleDemander = await this.questionAsync("Écrire le nom de la salle : ");
+        let trouve = false;
+        //on parcourt le tableau
+        CapaciteSalles.forEach(CapaciteSalle => {
+            //si le nom de la salle correspond au nom de la salle demandée on affiche sa capacité
+            if (CapaciteSalle.nom === SalleDemander) {
+                console.log(`La capacité maximum de la salle ${SalleDemander} est de ${CapaciteSalle.capacite}`);
+                trouve = true;
+            }
+        });
+        //si la salle n'a pas été trouvé dans le tableau
+        if (!trouve){
+            console.log("Cette salle n'existe pas.");
+            this.menuCapaciteSalle();
+        }
+    }
+
+    // Méthode pour créer un tableau avec la capacité et les salles données :
+    CreationTableauCapacite() {
+        let maxCapacite = 0;
+        let CapaciteSalles = [];
+
+        // On parcourt les différents cours de l'université
+        for (let i in this.universite.listeCours) {
+            // On parcourt les différents créneaux du cours
+            for (let j in this.universite.listeCours[i].creneau) {
+                // On récupère le nom de la salle
+                let NomSalle = this.universite.listeCours[i].creneau[j].salle.nom;
+                let SalleExistante = false;
+
+                // On parcourt le tableau des salles et des capacités
+                CapaciteSalles.forEach(CapaciteSalle => {
+                    // Si la salle existe déjà
+                    if (CapaciteSalle.nom === NomSalle) {
+                        SalleExistante = true;
+                        // On met à jour la capacité du tableau si elle est inférieure
+                        if (CapaciteSalle.capacite < this.universite.listeCours[i].creneau[j].nombreEleve) {
+                            CapaciteSalle.capacite = this.universite.listeCours[i].creneau[j].nombreEleve;
+                        }
+                    }
+                });
+
+                // Si la salle n'existe pas
+                if (!SalleExistante) {
+                    // On crée une nouvelle ligne avec la salle et sa capacité
+                    let NouvellePersonne = {
+                        nom: this.universite.listeCours[i].creneau[j].salle.nom,
+                        capacite: this.universite.listeCours[i].creneau[j].nombreEleve
+                    };
+                    // On l'ajoute au tableau
+                    CapaciteSalles.push(NouvellePersonne);
+                }
+            }
+        }
+        return CapaciteSalles;
+    }
+
 
     menuDisponibiliteDuneSalle(){
         
@@ -85,7 +152,6 @@ class Main{
         gestionnaireFichier.lireUnAutreFichier('./Data/data8.txt',this.universite);
         gestionnaireFichier.lireUnAutreFichier('./Data/data9.txt',this.universite);
         gestionnaireFichier.lireUnAutreFichier('./Data/data10.txt',this.universite);
-
     }
 
     //SPEC1
@@ -93,7 +159,7 @@ class Main{
     async menuClasseAssocieCours(){
         console.clear();
         console.log("**************************************************");
-        console.log("*** Voici les salles qui sont accosiées à un cours ***")
+        console.log("*** Voici les salles qui sont accosiées à un cours ***");
 
         const sallesCours = new Map();
         let listeSalle = new Array();
@@ -134,11 +200,7 @@ class Main{
         console.clear();
     }
 
-    questionAsync(prompt) {
-        return new Promise((resolve) => {
-        rl.question(prompt, resolve);
-         });     
-        }
+    
     // Méthode pour vérifier la disponibilité pour une salle donnée
 async menuDisponibiliteDuneSalle() {
     const SalleDemande = await this.questionAsync("Ecrire le nom de la salle : ");
