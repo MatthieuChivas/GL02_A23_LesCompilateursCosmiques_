@@ -39,6 +39,7 @@ class Main{
                 default : console.log('Veuillez rentrer un choix valide');
             }
             if(this.isReadlineClose){
+                console.log("Fermeture en cours");
                 break;
             }
         }
