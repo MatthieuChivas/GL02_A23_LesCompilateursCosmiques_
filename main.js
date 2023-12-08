@@ -49,19 +49,26 @@ class Main{
         console.clear();
         const ICalendar = require('./iCalendar.js');
         let iCal = new ICalendar(this.universite.listeCours);
-        //await iCal.execution();
-        let cours = []
-        let continuer = "oui"
-        let nomsCours = await iCal.recupererNomsCours()
-        while (continuer === "oui"){
-            let nomCours = await iCal.questionUtilisateurNomCours(nomsCours)
-            let infoCours = await iCal.recupererCours(nomCours)
-            if (infoCours !== true){
-                cours.push([nomCours,infoCours])
+        let choix;
+        do {
+            let cours = []
+            let continuer = "oui"
+            let nomsCours = await iCal.recupererNomsCours()
+            while (continuer === "oui"){
+                let nomCours = await iCal.questionUtilisateurNomCours(nomsCours)
+                let infoCours = await iCal.recupererCours(nomCours)
+                if (infoCours !== true){
+                    cours.push([nomCours,infoCours])
+                }
+                continuer = await iCal.questionAsync("Veux-tu continuer ? oui/non")
             }
-            continuer = await iCal.questionAsync("Veux-tu continuer ? oui/non")
-        }
-        await iCal.creerICalendar(cours)
+            await iCal.creerICalendar(cours)
+            while(choix!='oui' && choix!='non'){
+                console.log('veuillez rentrer oui ou non');
+                choix = await this.questionAsync("Veux tu créer un autre emploie du temps à exporter ? (oui/non) : ");
+            }
+        } while (choix=='oui')
+
 
     }
     
