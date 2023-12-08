@@ -90,10 +90,17 @@ class Main{
         let salle;
         
         
-        for (i=0;i<this.universite.listeCours.length){
-            for (j=0;j<this.universite.cours.creneau.horaire.length;j++){
-                //sallesDispo[i][j][k]=this.universite.cours.creneau.salle
-                this.universite.listeCours[i].listeCreneaux[j].
+        for(i=0;i<.length;i++){
+            for(j=0;j<.length;j++){
+                this.universite.salle[i]=this.universite.listeCours[i].listeCreneaux[j].salle    
+            }
+        }
+
+        for(i=0;i<.length;i++){
+            for(j=0;j<.length;j++){
+                if this.universite.listeCours[i].listeCreneaux[j].salle=this.universite.salle[i]{
+                    this.universite.salle[i].listeCreneaux[j]=this.universite.listeCours.listeCreneaux
+                }
             }
         }
         
