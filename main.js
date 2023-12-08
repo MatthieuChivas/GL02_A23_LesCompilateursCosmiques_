@@ -104,7 +104,7 @@ class Main{
                     if (CapaciteSalle.nom === NomSalle) {
                         SalleExistante = true;
                         // On met à jour la capacité du tableau si elle est inférieure
-                        if (CapaciteSalle.capacite < this.universite.listeCours[i].creneau[j].nombreEleve) {
+                        if (parseInt(CapaciteSalle.capacite) < parseInt(this.universite.listeCours[i].creneau[j].nombreEleve)) {
                             CapaciteSalle.capacite = this.universite.listeCours[i].creneau[j].nombreEleve;
                         }
                     }
@@ -122,6 +122,7 @@ class Main{
                     }
                 }
             }
+            //console.log (CapaciteSalles);
             return CapaciteSalles;
         }
 
