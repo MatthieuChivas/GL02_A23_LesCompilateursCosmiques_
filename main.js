@@ -88,23 +88,20 @@ class Main{
         let hdChoix;
         let hfChoix;
         let salle;
-        
-        
-        for(i=0;i<.length;i++){
-            for(j=0;j<.length;j++){
-                this.universite.salle[i]=this.universite.listeCours[i].listeCreneaux[j].salle    
-            }
-        }
+        let horaireSalle;
 
         for(i=0;i<.length;i++){
             for(j=0;j<.length;j++){
-                if this.universite.listeCours[i].listeCreneaux[j].salle=this.universite.salle[i]{
-                    this.universite.salle[i].listeCreneaux[j]=this.universite.listeCours.listeCreneaux
+                for (k=0;k<.length;k++){
+                    if this.universite.listeCours[i].listeHoraires[j].salle=this.universite.salle.listeSalles[k]{
+                        while (this.universite.salle.listeSalles[k].horaireSalle[h] != null){
+                            h=h+1;
+                        }
+                        this.universite.salle.listeSalles[k].horaireSalle[h]=this.universite.listeCours[i].listeHoraires[j]
+                    }
                 }
             }
         }
-        
-        cours.jour.creneau.salle
         
         
         
