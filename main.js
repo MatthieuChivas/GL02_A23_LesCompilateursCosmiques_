@@ -1,6 +1,5 @@
 const Ecole = require('./ecole.js');
 const Fichier = require('./gestionFichier.js');
-const ICalendar = require('./iCalendar.js');
 const ExcelJS = require('exceljs');
 const readline = require('node:readline');
 const { stdin: input, stdout: output } = require('node:process');
@@ -47,6 +46,7 @@ class Main{
 
     async menuExportEmploiDuTemps(){
         console.clear();
+        const ICalendar = require('./iCalendar.js');
         let iCal = new ICalendar(this.universite.listeCours);
         //await iCal.execution();
         let cours = []
@@ -136,16 +136,8 @@ class Main{
             console.log(CapaciteSalles);
         }
     
-    }
     
 
-    menuDisponibiliteDuneSalle(){
-        
-        
-    }
-
-    menuVisualisationTauxOccupationSalles(){
-    }
 
     importationDonneEtCreationObjets(){
         const gestionnaireFichier = new Fichier('./Data/data.txt');
@@ -159,7 +151,6 @@ class Main{
         gestionnaireFichier.lireUnAutreFichier('./Data/data8.txt',this.universite);
         gestionnaireFichier.lireUnAutreFichier('./Data/data9.txt',this.universite);
         gestionnaireFichier.lireUnAutreFichier('./Data/data10.txt',this.universite);
-
     }
 
     //SPEC1
@@ -214,8 +205,9 @@ class Main{
          });     
         }
     // Méthode pour vérifier la disponibilité pour une salle donnée
-async menuDisponibiliteDuneSalle() {
-    const SalleDemande = await this.questionAsync("Ecrire le nom de la salle : ");
+    
+    async menuDisponibiliteDuneSalle() {
+      const SalleDemande = await this.questionAsync("Ecrire le nom de la salle : ");
       // Vérifier l'existence d'une salle
       let salleExiste = false;
 
@@ -247,12 +239,12 @@ async menuDisponibiliteDuneSalle() {
     // Affichage des créneaux libres par jour
     console.log("Créneaux libres par jour :");
     console.log(creneauxLibresParJour);
-    } 
-    
+    }   
   }
+
   // Fonction pour trouver les créneaux libres 
   // Fonction pour obtenir les créneaux libres par jour
-trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
+  trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
     const creneauxLibresParJour = {};
   
     // Parcours de chaque jour de la semaine dans le dictionnaire de créneaux
@@ -392,63 +384,64 @@ trouverCreneauxLibres(heuresDisponibles, dictionnaireCreneaux) {
     return totalHeures;
   }
 // Fonction pour générer le fichier Excel
-async genererFichierExcel(tauxOccupation) {
-  const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet('Taux Occupation Salles');
-  
-  // Ajouter des en-têtes
-  worksheet.columns = [
-      { header: 'Salle', key: 'salle' },
-      { header: 'Taux Occupation', key: 'tauxOccupation' },
-  ];
+  async genererFichierExcel(tauxOccupation) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Taux Occupation Salles');
+    
+    // Ajouter des en-têtes
+    worksheet.columns = [
+        { header: 'Salle', key: 'salle' },
+        { header: 'Taux Occupation', key: 'tauxOccupation' },
+    ];
 
-  // Ajouter les données du taux d'occupation
-  Object.keys(tauxOccupation).forEach((salle) => {
-      worksheet.addRow({ salle: salle, tauxOccupation: tauxOccupation[salle] });
-  });
-    // Définir des règles de mise en forme conditionnelle
-    const tauxOccupationCol = worksheet.getColumn('tauxOccupation');
-    tauxOccupationCol.eachCell({ includeEmpty: true }, (cell, rowNumber) => {
-      // Vérifier si la cellule est vide ou non
-      if (cell.value) {
-        const tauxOccupation = parseFloat(cell.value.replace('%', ''));
-  
-        // Appliquer une mise en forme conditionnelle
-        if (tauxOccupation > 10) {
-          cell.style.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFFF0000' }, // Rouge vif
-          };
-        } else if (tauxOccupation > 5) {
-          cell.style.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFFF9900' }, // Orange vif
-          };
-        } else {
-          cell.style.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FF00FF00' }, // Vert vif
-          };
+    // Ajouter les données du taux d'occupation
+    Object.keys(tauxOccupation).forEach((salle) => {
+        worksheet.addRow({ salle: salle, tauxOccupation: tauxOccupation[salle] });
+    });
+      // Définir des règles de mise en forme conditionnelle
+      const tauxOccupationCol = worksheet.getColumn('tauxOccupation');
+      tauxOccupationCol.eachCell({ includeEmpty: true }, (cell, rowNumber) => {
+        // Vérifier si la cellule est vide ou non
+        if (cell.value) {
+          const tauxOccupation = parseFloat(cell.value.replace('%', ''));
+    
+          // Appliquer une mise en forme conditionnelle
+          if (tauxOccupation > 10) {
+            cell.style.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'FFFF0000' }, // Rouge vif
+            };
+          } else if (tauxOccupation > 5) {
+            cell.style.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'FFFF9900' }, // Orange vif
+            };
+          } else {
+            cell.style.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'FF00FF00' }, // Vert vif
+            };
+          }
         }
-      }
-    });
-  // Générer le fichier Excel
-  const fileName = 'TauxOccupationSalles.xlsx';
-  await workbook.xlsx.writeFile(fileName);
-  console.log(`Le fichier ${fileName} a été généré avec succès.`);
-}
-async menuClassementSalleParCapaciteDoccupation(){
-  //on récupère le tableau des salles et des capacités
-  let CapaciteSalles = this.CreationTableauCapacite();
-  //le tableau est modifié et trié par ordre croissant
-  CapaciteSalles.sort(function (a, b) {
-      return b.capacite - a.capacite;
-    });
-  console.log("Tableau des salles et de leurs capacités, triés par ordre croissant :");
-  console.log(CapaciteSalles);
+      });
+    // Générer le fichier Excel
+    const fileName = 'TauxOccupationSalles.xlsx';
+    await workbook.xlsx.writeFile(fileName);
+    console.log(`Le fichier ${fileName} a été généré avec succès.`);
+  }
+  async menuClassementSalleParCapaciteDoccupation(){
+    //on récupère le tableau des salles et des capacités
+    let CapaciteSalles = this.CreationTableauCapacite();
+    //le tableau est modifié et trié par ordre croissant
+    CapaciteSalles.sort(function (a, b) {
+        return b.capacite - a.capacite;
+      });
+    console.log("Tableau des salles et de leurs capacités, triés par ordre croissant :");
+    console.log(CapaciteSalles);
+  }
 }
 
 
