@@ -446,16 +446,6 @@ class Main{
     await workbook.xlsx.writeFile(fileName);
     console.log(`Le fichier ${fileName} a été généré avec succès.`);
   }
-  /*async menuClassementSalleParCapaciteDoccupation(){
-    //on récupère le tableau des salles et des capacités
-    let CapaciteSalles = this.CreationTableauCapacite();
-    //le tableau est modifié et trié par ordre croissant
-    CapaciteSalles.sort(function (a, b) {
-        return b.capacite - a.capacite;
-      });
-    console.log("Tableau des salles et de leurs capacités, triés par ordre croissant :");
-    console.log(CapaciteSalles);
-  }*/
 }
 
 
