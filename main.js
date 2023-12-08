@@ -147,7 +147,7 @@ class Main{
                     infos[2]=caracteres[i2+1]+caracteres[i2+2]+caracteres[i2+3]+caracteres[i2+4]+caracteres[i2+5];
                 }
             }
-            if (caracteres[i2]=='S'){
+            if ((caracteres[i2]=='S')&&(caracteres[i2+1]=='=')){
                 infos[3]=caracteres[i2+2]+caracteres[i2+3]+caracteres[i2+4]+caracteres[i2+5]
             }
             if ((caracteres[i2]=='/')&&(infos[0]!=null)&&(infos[1]!=null)&&(infos[2]!=null)&&(infos[3]!=null)){
